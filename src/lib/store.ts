@@ -21,7 +21,7 @@ interface AppState {
   selectedTargetStatus: TargetStatus;
   isProcessing: boolean;
   error: string | null;
-  
+
   setColumns: (columns: string[]) => void;
   setRawData: (data: RawDataRow[]) => void;
   setColumnMapping: (mapping: ColumnMapping | null) => void;

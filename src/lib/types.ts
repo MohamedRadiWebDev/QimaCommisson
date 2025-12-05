@@ -8,10 +8,6 @@ export interface ColumnMapping {
 }
 
 export interface RawDataRow {
-  [key: string]: string | number | undefined;
-}
-
-export interface NormalizedRow {
   payment: number;
   type: string;
   collector: string;
@@ -20,96 +16,39 @@ export interface NormalizedRow {
   employeeType: string;
 }
 
+export interface CollectorData {
+  name: string;
+  payment: number;
+  employeeType: string;
+}
+
+export interface SVData {
+  name: string;
+  payment: number;
+}
+
+export interface HeadData {
+  name: string;
+  payment: number;
+}
+
+export interface TypeData {
+  typeName: string;
+  collectors: CollectorData[];
+  svs: SVData[];
+  heads: HeadData[];
+  totalPayment: number;
+}
+
+export interface ProcessedData {
+  types: TypeData[];
+  targetStatus: TargetStatus;
+}
+
+export type Company = "Waseela" | "Ghazala" | "Marsa";
 export type TargetStatus = "No Target" | "Target" | "Over Target";
 
 export interface Employee {
   name: string;
   type: "collector" | "tele" | "production" | "S.V" | "Head";
-}
-
-export interface EmployeeRole {
-  name: string;
-  role: "Collector" | "Telesales" | "Production";
-  customRate?: number;
-}
-
-export interface EmployeeRolesMapping {
-  [employeeName: string]: EmployeeRole;
-}
-
-export interface CollectorData {
-  collector: string;
-  totalPayment: number;
-  rate: number;
-  commission: number;
-}
-
-export interface TypeGroup {
-  type: string;
-  collectors: CollectorData[];
-  totalPayment: number;
-  totalRate: number;
-  totalCommission: number;
-  typeTotalCommission: number;
-  svRate: number;
-  svCommission: number;
-  headRate: number;
-  headCommission: number;
-}
-
-export interface SVHeadSummaryRow {
-  type: string;
-  totalPayment: number;
-  svRate: number;
-  svCommission: number;
-  headRate: number;
-  headCommission: number;
-}
-
-export interface SVHeadSummary {
-  rows: SVHeadSummaryRow[];
-  totalPayment: number;
-  totalSVCommission: number;
-  totalHeadCommission: number;
-}
-
-export interface SVGroup {
-  sv: string;
-  types: TypeGroup[];
-  totalPayment: number;
-  totalCommission: number;
-}
-
-export interface HeadGroup {
-  head: string;
-  svGroups: SVGroup[];
-  totalPayment: number;
-  totalCommission: number;
-}
-
-export interface ProcessedData {
-  headGroups: HeadGroup[];
-  grandTotalPayment: number;
-  grandTotalCommission: number;
-}
-
-export type Company = 
-  | "Raya" 
-  | "VALU" 
-  | "بنك الإسكندرية" 
-  | "بنك كريدي أجريكول" 
-  | "Money_Fellows" 
-  | "Midtakseet" 
-  | "Souhoola" 
-  | "Tanmeyah" 
-  | "Waseela" 
-  | "Seven" 
-  | "Erada" 
-  | "Midbank";
-
-export interface CompanyRates {
-  [type: string]: {
-    defaultRates: { [collectorName: string]: number };
-    totalRate: number;
-  };
 }
