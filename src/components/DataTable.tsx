@@ -60,22 +60,22 @@ export default function DataTable({ data, company }: DataTableProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
-      <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
+    <div className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+      <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">Commission Results</h2>
-          <p className="text-sm text-gray-600">Company: {company}</p>
+          <h2 className="text-xl font-bold text-slate-800">Commission Results</h2>
+          <p className="text-sm text-slate-600">Company: {company}</p>
         </div>
         <div className="flex gap-2">
           <button
             onClick={expandAll}
-            className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors"
+            className="px-4 py-2 text-sm bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium"
           >
             Expand All
           </button>
           <button
             onClick={collapseAll}
-            className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
+            className="px-4 py-2 text-sm bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors font-medium"
           >
             Collapse All
           </button>
@@ -84,15 +84,15 @@ export default function DataTable({ data, company }: DataTableProps) {
 
       <div className="overflow-x-auto">
         <table className="w-full min-w-[800px]">
-          <thead className="bg-blue-800 text-white">
+          <thead className="bg-slate-700">
             <tr>
-              <th className="px-4 py-3 text-right w-48">head</th>
-              <th className="px-4 py-3 text-right w-48">s.v</th>
-              <th className="px-4 py-3 text-right w-32">Type</th>
-              <th className="px-4 py-3 text-right w-48">collector</th>
-              <th className="px-4 py-3 text-right w-40">Sum of Payment</th>
-              <th className="px-4 py-3 text-right w-24">Rate</th>
-              <th className="px-4 py-3 text-right w-32">Commission</th>
+              <th className="px-4 py-3 text-right text-white font-semibold w-48">Head</th>
+              <th className="px-4 py-3 text-right text-white font-semibold w-48">S.V</th>
+              <th className="px-4 py-3 text-right text-white font-semibold w-32">Type</th>
+              <th className="px-4 py-3 text-right text-white font-semibold w-48">Collector</th>
+              <th className="px-4 py-3 text-right text-white font-semibold w-40">Sum of Payment</th>
+              <th className="px-4 py-3 text-right text-white font-semibold w-24">Rate</th>
+              <th className="px-4 py-3 text-right text-white font-semibold w-32">Commission</th>
             </tr>
           </thead>
           <tbody>
@@ -103,18 +103,18 @@ export default function DataTable({ data, company }: DataTableProps) {
               return (
                 <Fragment key={hIdx}>
                   <tr
-                    className="bg-blue-100 cursor-pointer hover:bg-blue-200 transition-colors"
+                    className="bg-slate-100 cursor-pointer hover:bg-slate-200 transition-colors border-b border-slate-200"
                     onClick={() => toggleHead(headKey)}
                   >
-                    <td className="px-4 py-2 text-right font-medium text-blue-900">
+                    <td className="px-4 py-3 text-right font-bold text-slate-800">
                       <span className="flex items-center justify-end gap-2">
-                        <span className="text-xs">{isHeadExpanded ? "▼" : "▶"}</span>
+                        <span className="text-xs text-slate-500">{isHeadExpanded ? "▼" : "▶"}</span>
                         {headGroup.head}
                       </span>
                     </td>
                     <td colSpan={4}></td>
-                    <td className="px-4 py-2 text-right font-medium">{formatCurrency(headGroup.totalPayment)}</td>
-                    <td className="px-4 py-2 text-right font-medium">{formatCurrency(headGroup.totalCommission)}</td>
+                    <td className="px-4 py-3 text-right font-bold text-slate-800">{formatCurrency(headGroup.totalPayment)}</td>
+                    <td className="px-4 py-3 text-right font-bold text-emerald-700">{formatCurrency(headGroup.totalCommission)}</td>
                   </tr>
 
                   {isHeadExpanded && headGroup.svGroups.map((svGroup, sIdx) => {
@@ -124,19 +124,19 @@ export default function DataTable({ data, company }: DataTableProps) {
                     return (
                       <Fragment key={sIdx}>
                         <tr
-                          className="bg-blue-50 cursor-pointer hover:bg-blue-100 transition-colors"
+                          className="bg-slate-50 cursor-pointer hover:bg-slate-100 transition-colors border-b border-slate-100"
                           onClick={() => toggleSV(svKey)}
                         >
                           <td className="px-4 py-2"></td>
-                          <td className="px-4 py-2 text-right font-medium text-blue-800">
+                          <td className="px-4 py-2 text-right font-semibold text-slate-700">
                             <span className="flex items-center justify-end gap-2">
-                              <span className="text-xs">{isSVExpanded ? "▼" : "▶"}</span>
+                              <span className="text-xs text-slate-400">{isSVExpanded ? "▼" : "▶"}</span>
                               {svGroup.sv}
                             </span>
                           </td>
                           <td colSpan={3}></td>
-                          <td className="px-4 py-2 text-right">{formatCurrency(svGroup.totalPayment)}</td>
-                          <td className="px-4 py-2 text-right">{formatCurrency(svGroup.totalCommission)}</td>
+                          <td className="px-4 py-2 text-right font-medium text-slate-700">{formatCurrency(svGroup.totalPayment)}</td>
+                          <td className="px-4 py-2 text-right font-medium text-emerald-600">{formatCurrency(svGroup.totalCommission)}</td>
                         </tr>
 
                         {isSVExpanded && svGroup.types.map((typeGroup, tIdx) => (
@@ -145,86 +145,99 @@ export default function DataTable({ data, company }: DataTableProps) {
                               <tr
                                 key={cIdx}
                                 className={cn(
-                                  "hover:bg-gray-50 transition-colors",
-                                  cIdx === 0 && "border-t border-gray-200"
+                                  "hover:bg-white transition-colors bg-white",
+                                  cIdx === 0 && "border-t border-slate-100"
                                 )}
                               >
                                 <td className="px-4 py-2"></td>
                                 <td className="px-4 py-2"></td>
-                                <td className="px-4 py-2 text-right">
+                                <td className="px-4 py-2 text-right text-slate-600 font-medium">
                                   {cIdx === 0 && typeGroup.type}
                                 </td>
-                                <td className="px-4 py-2 text-right">{collector.collector}</td>
-                                <td className="px-4 py-2 text-right">{formatCurrency(collector.totalPayment)}</td>
+                                <td className="px-4 py-2 text-right text-slate-700">{collector.collector}</td>
+                                <td className="px-4 py-2 text-right text-slate-700">{formatCurrency(collector.totalPayment)}</td>
                                 <td className="px-4 py-2 text-right">
                                   <span className={cn(
-                                    "px-2 py-0.5 rounded text-sm font-medium",
-                                    collector.rate >= 2 ? "bg-yellow-100 text-yellow-800" :
-                                    collector.rate >= 1.5 ? "bg-green-100 text-green-800" :
-                                    "bg-gray-100 text-gray-800"
+                                    "px-2 py-1 rounded text-sm font-semibold",
+                                    collector.rate >= 2 ? "bg-amber-100 text-amber-800 border border-amber-300" :
+                                    collector.rate >= 1.5 ? "bg-emerald-100 text-emerald-800 border border-emerald-300" :
+                                    "bg-slate-100 text-slate-700 border border-slate-300"
                                   )}>
                                     {formatPercent(collector.rate)}
                                   </span>
                                 </td>
-                                <td className="px-4 py-2 text-right">{formatCurrency(collector.commission)}</td>
+                                <td className="px-4 py-2 text-right text-slate-700">{formatCurrency(collector.commission)}</td>
                               </tr>
                             ))}
                             
                             <tr className={cn(
-                              "font-medium",
-                              typeGroup.type === "Active" ? "bg-green-100" : "bg-yellow-100"
+                              "font-semibold border-t",
+                              typeGroup.type === "Active" 
+                                ? "bg-emerald-50 border-emerald-200" 
+                                : "bg-amber-50 border-amber-200"
                             )}>
                               <td colSpan={3}></td>
-                              <td className="px-4 py-2 text-right font-semibold">
+                              <td className={cn(
+                                "px-4 py-2 text-right font-bold",
+                                typeGroup.type === "Active" ? "text-emerald-800" : "text-amber-800"
+                              )}>
                                 {typeGroup.type} Total
                               </td>
-                              <td className="px-4 py-2 text-right">{formatCurrency(typeGroup.totalPayment)}</td>
+                              <td className={cn(
+                                "px-4 py-2 text-right font-bold",
+                                typeGroup.type === "Active" ? "text-emerald-800" : "text-amber-800"
+                              )}>{formatCurrency(typeGroup.totalPayment)}</td>
                               <td className="px-4 py-2 text-right">
                                 <span className={cn(
-                                  "px-2 py-0.5 rounded text-sm font-medium",
-                                  typeGroup.type === "Active" ? "bg-green-200" : "bg-yellow-200"
+                                  "px-2 py-1 rounded text-sm font-bold",
+                                  typeGroup.type === "Active" 
+                                    ? "bg-emerald-200 text-emerald-900 border border-emerald-400" 
+                                    : "bg-amber-200 text-amber-900 border border-amber-400"
                                 )}>
                                   {formatPercent(typeGroup.totalRate)}
                                 </span>
                               </td>
-                              <td className="px-4 py-2 text-right">{formatCurrency(typeGroup.totalCommission)}</td>
+                              <td className={cn(
+                                "px-4 py-2 text-right font-bold",
+                                typeGroup.type === "Active" ? "text-emerald-800" : "text-amber-800"
+                              )}>{formatCurrency(typeGroup.totalCommission)}</td>
                             </tr>
                           </Fragment>
                         ))}
 
-                        <tr className="bg-gray-100 font-medium">
+                        <tr className="bg-slate-100 font-semibold border-t border-slate-200">
                           <td className="px-4 py-2"></td>
-                          <td className="px-4 py-2 text-right" colSpan={3}>
+                          <td className="px-4 py-2 text-right text-slate-700" colSpan={3}>
                             Total {svGroup.sv}
                           </td>
-                          <td className="px-4 py-2 text-right">{formatCurrency(svGroup.totalPayment)}</td>
+                          <td className="px-4 py-2 text-right text-slate-800">{formatCurrency(svGroup.totalPayment)}</td>
                           <td className="px-4 py-2"></td>
-                          <td className="px-4 py-2 text-right">{formatCurrency(svGroup.totalCommission)}</td>
+                          <td className="px-4 py-2 text-right text-emerald-700">{formatCurrency(svGroup.totalCommission)}</td>
                         </tr>
                       </Fragment>
                     );
                   })}
 
-                  <tr className="bg-blue-200 font-semibold">
-                    <td className="px-4 py-2 text-right" colSpan={4}>
+                  <tr className="bg-slate-200 font-bold border-t-2 border-slate-300">
+                    <td className="px-4 py-3 text-right text-slate-800" colSpan={4}>
                       Total {headGroup.head}
                     </td>
-                    <td className="px-4 py-2 text-right">{formatCurrency(headGroup.totalPayment)}</td>
-                    <td className="px-4 py-2"></td>
-                    <td className="px-4 py-2 text-right">{formatCurrency(headGroup.totalCommission)}</td>
+                    <td className="px-4 py-3 text-right text-slate-900">{formatCurrency(headGroup.totalPayment)}</td>
+                    <td className="px-4 py-3"></td>
+                    <td className="px-4 py-3 text-right text-emerald-700">{formatCurrency(headGroup.totalCommission)}</td>
                   </tr>
                 </Fragment>
               );
             })}
           </tbody>
           <tfoot>
-            <tr className="bg-gray-800 text-white font-bold">
-              <td className="px-4 py-3 text-right" colSpan={4}>
+            <tr className="bg-slate-800">
+              <td className="px-4 py-4 text-right text-white font-bold text-lg" colSpan={4}>
                 Grand Total
               </td>
-              <td className="px-4 py-3 text-right">{formatCurrency(data.grandTotalPayment)}</td>
-              <td className="px-4 py-3"></td>
-              <td className="px-4 py-3 text-right">{formatCurrency(data.grandTotalCommission)}</td>
+              <td className="px-4 py-4 text-right text-white font-bold text-lg">{formatCurrency(data.grandTotalPayment)}</td>
+              <td className="px-4 py-4"></td>
+              <td className="px-4 py-4 text-right text-emerald-400 font-bold text-lg">{formatCurrency(data.grandTotalCommission)}</td>
             </tr>
           </tfoot>
         </table>

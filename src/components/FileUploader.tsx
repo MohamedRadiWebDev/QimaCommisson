@@ -56,10 +56,10 @@ export default function FileUploader({ onFileSelect, isLoading }: FileUploaderPr
   return (
     <div
       className={cn(
-        "border-2 border-dashed rounded-xl p-8 text-center transition-all",
+        "border-2 border-dashed rounded-xl p-12 text-center transition-all bg-white",
         isDragging
-          ? "border-blue-500 bg-blue-50"
-          : "border-gray-300 hover:border-gray-400",
+          ? "border-emerald-500 bg-emerald-50"
+          : "border-slate-300 hover:border-slate-400 hover:bg-slate-50",
         isLoading && "opacity-50 pointer-events-none"
       )}
       onDragOver={handleDragOver}
@@ -68,11 +68,11 @@ export default function FileUploader({ onFileSelect, isLoading }: FileUploaderPr
     >
       <div className="flex flex-col items-center">
         {isLoading ? (
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4" />
+          <div className="animate-spin rounded-full h-14 w-14 border-4 border-emerald-200 border-t-emerald-600 mb-4" />
         ) : (
-          <div className="bg-gray-100 p-4 rounded-full mb-4">
+          <div className="bg-slate-100 p-5 rounded-full mb-4">
             <svg
-              className="w-8 h-8 text-gray-500"
+              className="w-10 h-10 text-slate-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -87,7 +87,7 @@ export default function FileUploader({ onFileSelect, isLoading }: FileUploaderPr
           </div>
         )}
 
-        <p className="text-lg font-medium text-gray-700 mb-2">
+        <p className="text-xl font-semibold text-slate-800 mb-2">
           {isLoading
             ? "Processing file..."
             : fileName
@@ -95,13 +95,13 @@ export default function FileUploader({ onFileSelect, isLoading }: FileUploaderPr
             : "Drag & drop your Excel file here"}
         </p>
 
-        <p className="text-sm text-gray-500 mb-4">
+        <p className="text-sm text-slate-500 mb-6">
           Supports .xlsx, .xls, and .csv files
         </p>
 
         <label
           className={cn(
-            "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg font-medium cursor-pointer hover:bg-blue-700 transition-colors",
+            "inline-flex items-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold cursor-pointer hover:bg-emerald-700 transition-colors shadow-md",
             isLoading && "cursor-not-allowed"
           )}
         >
