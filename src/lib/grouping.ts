@@ -12,7 +12,7 @@ import type {
   SVHeadSummaryRow
 } from "./types";
 import { useEmployeeStore } from "./employeeStore";
-import { calculateCommission } from "./calculator";
+import { getCommissionRateFromJson } from "./calculator";
 
 export function groupAndCalculate(
   data: RawDataRow[],
@@ -72,7 +72,7 @@ export function groupAndCalculate(
 
         collectorMap.forEach((payment, collectorName) => {
           const employeeType = employeeTypeMap.get(collectorName) || "collector";
-          const rate = calculateCommission(typeName, employeeType, company, targetStatus);
+          const rate = getCommissionRateFromJson(company, typeName, employeeType, targetStatus);
           const commission = (payment * rate) / 100;
 
           collectors.push({
@@ -152,8 +152,8 @@ export function generateSVHeadSummary(data: ProcessedData, company: Company): SV
   let totalHeadCommission = 0;
 
   typeMap.forEach((payment, typeName) => {
-    const svRate = calculateCommission(typeName, "sv", company, "No Target");
-    const headRate = calculateCommission(typeName, "head", company, "No Target");
+    const svRate = getCommissionRateFromJson(company, typeName, "S.V", "No Target");
+    const headRate = getCommissionRateFromJson(company, typeName, "Head", "No Target");
     const svCommission = (payment * svRate) / 100;
     const headCommission = (payment * headRate) / 100;
 
