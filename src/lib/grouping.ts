@@ -7,8 +7,10 @@ import type {
   SVGroup,
   TypeGroup,
   CollectorData,
+  SVHeadSummary,
+  SVHeadSummaryRow,
 } from "./types";
-import { getCollectorRate, calculateTypeTotalCommission } from "./calculator";
+import { getCollectorRate, calculateSVCommission, calculateHeadCommission } from "./calculator";
 
 export function groupAndCalculate(
   data: NormalizedRow[],
@@ -17,7 +19,6 @@ export function groupAndCalculate(
 ): ProcessedData {
   const headGroups: HeadGroup[] = [];
 
-  // Group by Head
   const headMap = new Map<string, NormalizedRow[]>();
   data.forEach((row) => {
     const head = row.head || "Unknown";
@@ -30,7 +31,6 @@ export function groupAndCalculate(
   headMap.forEach((headRows, headName) => {
     const svGroups: SVGroup[] = [];
 
-    // Group by S.V within this Head
     const svMap = new Map<string, NormalizedRow[]>();
     headRows.forEach((row) => {
       const sv = row.sv || "Unknown";
@@ -43,7 +43,6 @@ export function groupAndCalculate(
     svMap.forEach((svRows, svName) => {
       const typeGroups: TypeGroup[] = [];
 
-      // Group by Type within this S.V
       const typeMap = new Map<string, NormalizedRow[]>();
       svRows.forEach((row) => {
         const type = row.type || "Unknown";
@@ -56,7 +55,6 @@ export function groupAndCalculate(
       typeMap.forEach((typeRows, typeName) => {
         const collectors: CollectorData[] = [];
 
-        // Group by Collector within this Type
         const collectorMap = new Map<string, number>();
         typeRows.forEach((row) => {
           const collector = row.collector || "Unknown";
@@ -76,29 +74,30 @@ export function groupAndCalculate(
           });
         });
 
-        // Sort collectors by name
         collectors.sort((a, b) => a.collector.localeCompare(b.collector));
 
         const totalPayment = collectors.reduce((sum, c) => sum + c.totalPayment, 0);
         const collectorsCommission = collectors.reduce((sum, c) => sum + c.commission, 0);
         
-        // Calculate the type total commission (additional commission on the total)
-        const typeTotalCommission = calculateTypeTotalCommission(company, typeName, totalPayment);
+        const svResult = calculateSVCommission(company, typeName, totalPayment, "No Target");
+        const headResult = calculateHeadCommission(company, typeName, totalPayment, "No Target");
         
-        // Total commission = individual collectors commission + type total commission
-        const totalCommission = collectorsCommission + typeTotalCommission;
+        const totalCommission = collectorsCommission;
 
         typeGroups.push({
           type: typeName,
           collectors,
           totalPayment,
-          totalRate: collectors.length > 0 ? (totalCommission / totalPayment) * 100 : 0,
+          totalRate: collectors.length > 0 && totalPayment > 0 ? (totalCommission / totalPayment) * 100 : 0,
           totalCommission,
-          typeTotalCommission, // Store this separately for display
+          typeTotalCommission: collectorsCommission,
+          svRate: svResult.rate,
+          svCommission: svResult.commission,
+          headRate: headResult.rate,
+          headCommission: headResult.commission,
         });
       });
 
-      // Sort types
       typeGroups.sort((a, b) => a.type.localeCompare(b.type));
 
       const totalPayment = typeGroups.reduce((sum, t) => sum + t.totalPayment, 0);
@@ -112,7 +111,6 @@ export function groupAndCalculate(
       });
     });
 
-    // Sort SVs
     svGroups.sort((a, b) => a.sv.localeCompare(b.sv));
 
     const totalPayment = svGroups.reduce((sum, sv) => sum + sv.totalPayment, 0);
@@ -126,7 +124,6 @@ export function groupAndCalculate(
     });
   });
 
-  // Sort heads
   headGroups.sort((a, b) => a.head.localeCompare(b.head));
 
   const grandTotalPayment = headGroups.reduce((sum, h) => sum + h.totalPayment, 0);
@@ -136,5 +133,58 @@ export function groupAndCalculate(
     headGroups,
     grandTotalPayment,
     grandTotalCommission,
+  };
+}
+
+export function generateSVHeadSummary(
+  data: ProcessedData,
+  company: Company
+): SVHeadSummary {
+  const typeSummaryMap = new Map<string, { totalPayment: number; svRate: number; svCommission: number; headRate: number; headCommission: number }>();
+
+  data.headGroups.forEach((headGroup) => {
+    headGroup.svGroups.forEach((svGroup) => {
+      svGroup.types.forEach((typeGroup) => {
+        const existing = typeSummaryMap.get(typeGroup.type);
+        if (existing) {
+          existing.totalPayment += typeGroup.totalPayment;
+          existing.svCommission += typeGroup.svCommission;
+          existing.headCommission += typeGroup.headCommission;
+        } else {
+          typeSummaryMap.set(typeGroup.type, {
+            totalPayment: typeGroup.totalPayment,
+            svRate: typeGroup.svRate,
+            svCommission: typeGroup.svCommission,
+            headRate: typeGroup.headRate,
+            headCommission: typeGroup.headCommission,
+          });
+        }
+      });
+    });
+  });
+
+  const rows: SVHeadSummaryRow[] = [];
+  typeSummaryMap.forEach((summary, typeName) => {
+    rows.push({
+      type: typeName,
+      totalPayment: summary.totalPayment,
+      svRate: summary.svRate,
+      svCommission: summary.svCommission,
+      headRate: summary.headRate,
+      headCommission: summary.headCommission,
+    });
+  });
+
+  rows.sort((a, b) => a.type.localeCompare(b.type));
+
+  const totalPayment = rows.reduce((sum, r) => sum + r.totalPayment, 0);
+  const totalSVCommission = rows.reduce((sum, r) => sum + r.svCommission, 0);
+  const totalHeadCommission = rows.reduce((sum, r) => sum + r.headCommission, 0);
+
+  return {
+    rows,
+    totalPayment,
+    totalSVCommission,
+    totalHeadCommission,
   };
 }

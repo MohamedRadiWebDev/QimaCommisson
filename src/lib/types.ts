@@ -47,6 +47,26 @@ export interface TypeGroup {
   totalRate: number;
   totalCommission: number;
   typeTotalCommission: number;
+  svRate: number;
+  svCommission: number;
+  headRate: number;
+  headCommission: number;
+}
+
+export interface SVHeadSummaryRow {
+  type: string;
+  totalPayment: number;
+  svRate: number;
+  svCommission: number;
+  headRate: number;
+  headCommission: number;
+}
+
+export interface SVHeadSummary {
+  rows: SVHeadSummaryRow[];
+  totalPayment: number;
+  totalSVCommission: number;
+  totalHeadCommission: number;
 }
 
 export interface SVGroup {
