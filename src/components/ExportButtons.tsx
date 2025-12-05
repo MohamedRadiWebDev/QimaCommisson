@@ -8,6 +8,14 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { generateSVHeadDetailedSummary } from "@/lib/grouping";
 import type { Company } from "@/lib/types";
+import "jspdf-autotable";
+
+// Add Arabic font support
+if (typeof window !== 'undefined') {
+  import('jspdf-arabic-font').then(() => {
+    // Font will be automatically registered
+  });
+}
 
 interface ExportButtonsProps {
   data: ProcessedData;
@@ -206,7 +214,16 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
   }, [data, company]);
 
   const exportToPDF = useCallback(() => {
-    const doc = new jsPDF("landscape");
+    const doc = new jsPDF({
+      orientation: "landscape",
+      unit: "mm",
+      format: "a4"
+    });
+    
+    // Set default font to Arabic
+    doc.setFont("Amiri-Regular");
+    doc.setLanguage("ar");
+    
     const svHeadSummary = generateSVHeadDetailedSummary(data, company);
     
     // Add title
@@ -288,18 +305,28 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
       body: mainTableData,
       startY: 28,
       styles: {
-        fontSize: 8,
-        cellPadding: 2
+        fontSize: 9,
+        cellPadding: 2,
+        font: "helvetica",
+        halign: "left"
       },
       headStyles: {
         fillColor: [51, 65, 85],
         textColor: [255, 255, 255],
-        fontStyle: "bold"
+        fontStyle: "bold",
+        halign: "center"
       },
       columnStyles: {
         4: { halign: "right" },
         5: { halign: "center" },
         6: { halign: "right" }
+      },
+      didParseCell: function(data) {
+        // Check if the text contains Arabic characters
+        const text = data.cell.text.join("");
+        if (/[\u0600-\u06FF]/.test(text)) {
+          data.cell.styles.halign = "right";
+        }
       }
     });
     
@@ -342,18 +369,27 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
       body: svTableData,
       startY: 25,
       styles: {
-        fontSize: 8,
-        cellPadding: 2
+        fontSize: 9,
+        cellPadding: 2,
+        font: "helvetica",
+        halign: "left"
       },
       headStyles: {
         fillColor: [99, 102, 241],
         textColor: [255, 255, 255],
-        fontStyle: "bold"
+        fontStyle: "bold",
+        halign: "center"
       },
       columnStyles: {
         2: { halign: "right" },
         3: { halign: "center" },
         4: { halign: "right" }
+      },
+      didParseCell: function(data) {
+        const text = data.cell.text.join("");
+        if (/[\u0600-\u06FF]/.test(text)) {
+          data.cell.styles.halign = "right";
+        }
       }
     });
     
@@ -396,18 +432,27 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
       body: headTableData,
       startY: 25,
       styles: {
-        fontSize: 8,
-        cellPadding: 2
+        fontSize: 9,
+        cellPadding: 2,
+        font: "helvetica",
+        halign: "left"
       },
       headStyles: {
         fillColor: [168, 85, 247],
         textColor: [255, 255, 255],
-        fontStyle: "bold"
+        fontStyle: "bold",
+        halign: "center"
       },
       columnStyles: {
         2: { halign: "right" },
         3: { halign: "center" },
         4: { halign: "right" }
+      },
+      didParseCell: function(data) {
+        const text = data.cell.text.join("");
+        if (/[\u0600-\u06FF]/.test(text)) {
+          data.cell.styles.halign = "right";
+        }
       }
     });
     
