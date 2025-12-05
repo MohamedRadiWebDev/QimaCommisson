@@ -1,3 +1,4 @@
+
 export interface ColumnMapping {
   payment: string;
   type: string;
@@ -90,19 +91,7 @@ export interface SVHeadSummary {
   totalHeadCommission: number;
 }
 
-export type Company = 
-  | "Raya" 
-  | "VALU" 
-  | "بنك الإسكندرية" 
-  | "بنك كريدي أجريكول" 
-  | "Money_Fellows" 
-  | "Midtakseet" 
-  | "Souhoola" 
-  | "Tanmeyah" 
-  | "Waseela" 
-  | "Seven" 
-  | "Erada" 
-  | "Midbank";
+export type Company = string;
 export type TargetStatus = "No Target" | "Target" | "Over Target";
 
 export type EmployeeRole = "collector" | "tele" | "production" | "S.V" | "Head";
@@ -110,10 +99,12 @@ export type EmployeeRole = "collector" | "tele" | "production" | "S.V" | "Head";
 export interface Employee {
   name: string;
   type: EmployeeRole;
+  customRate?: number;
+  role?: "Collector" | "Telesales" | "Production";
 }
 
 export interface EmployeeRolesMapping {
-  [name: string]: EmployeeRole;
+  [name: string]: Employee;
 }
 
 export interface Domain {

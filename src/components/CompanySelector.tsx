@@ -29,14 +29,12 @@ export default function CompanySelector({
   selectedCompany,
   onCompanyChange,
 }: CompanySelectorProps) {
-  const COMPANIES = useMemo(() => {
-    const companyRates = loadCompanyRates();
-    return Object.keys(companyRates).map((companyId) => ({
-      id: companyId as Company,
-      name: companyId,
-      description: COMPANY_DESCRIPTIONS[companyId] || `${companyId} - Commission Rates`,
-    }));
-  }, []);
+  const companyRates = loadCompanyRates();
+  const COMPANIES = Object.keys(companyRates).map((companyId) => ({
+    id: companyId as Company,
+    name: companyId,
+    description: COMPANY_DESCRIPTIONS[companyId] || `${companyId} - Commission Rates`,
+  }));
 
   return (
     <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4">
