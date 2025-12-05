@@ -90,7 +90,19 @@ export interface SVHeadSummary {
   totalHeadCommission: number;
 }
 
-export type Company = "Waseela" | "Ghazala" | "Marsa";
+export type Company = 
+  | "Raya" 
+  | "VALU" 
+  | "بنك الإسكندرية" 
+  | "بنك كريدي أجريكول" 
+  | "Money_Fellows" 
+  | "Midtakseet" 
+  | "Souhoola" 
+  | "Tanmeyah" 
+  | "Waseela" 
+  | "Seven" 
+  | "Erada" 
+  | "Midbank";
 export type TargetStatus = "No Target" | "Target" | "Over Target";
 
 export type EmployeeRole = "collector" | "tele" | "production" | "S.V" | "Head";
