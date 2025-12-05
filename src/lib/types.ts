@@ -14,6 +14,7 @@ export interface RawDataRow {
   sv: string;
   head: string;
   employeeType: string;
+  [key: string]: string | number;
 }
 
 export interface CollectorData {

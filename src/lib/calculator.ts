@@ -11,9 +11,6 @@ export function getCustomRateIfExists(collectorName: string, employees: Array<{n
   return null;
 }
 
-import type { Company, EmployeeRolesMapping } from "./types";
-import { loadCompanyRates } from "./companyRatesLoader";
-
 const companyRatesData = loadCompanyRates();
 
 function parsePercentage(value: string | undefined): number {

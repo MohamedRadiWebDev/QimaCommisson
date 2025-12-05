@@ -72,7 +72,7 @@ export function groupAndCalculate(
         let typeTotalCommission = 0;
 
         collectorMap.forEach((payment, collectorName) => {
-          const collectorRole = employeeRoles[collectorName]?.type || "collector";
+          const collectorRole = employeeRoles[collectorName]?.role || "collector";
           const rate = getCommissionRateFromJson(company, typeName, collectorRole, targetStatus);
           const commission = (payment * rate) / 100;
 
