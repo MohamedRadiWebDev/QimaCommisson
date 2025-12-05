@@ -8,7 +8,7 @@ import type {
   TypeGroup,
   CollectorData,
 } from "./types";
-import { getCommissionRate } from "./calculator";
+import { getCollectorRate } from "./calculator";
 
 export function groupAndCalculate(
   data: NormalizedRow[],
@@ -65,7 +65,7 @@ export function groupAndCalculate(
         });
 
         collectorMap.forEach((payment, collectorName) => {
-          const rate = getCommissionRate(company, typeName, collectorName, employeeRoles);
+          const rate = getCollectorRate(company, typeName, collectorName, employeeRoles);
           const commission = (payment * rate) / 100;
 
           collectors.push({
