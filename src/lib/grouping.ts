@@ -1,64 +1,72 @@
 import type {
   NormalizedRow,
-  CollectorData,
-  TypeGroup,
-  SVGroup,
-  HeadGroup,
   ProcessedData,
   Company,
   EmployeeRolesMapping,
+  HeadGroup,
+  SVGroup,
+  TypeGroup,
+  CollectorData,
 } from "./types";
-import { getCollectorRate, getTypeTotalRate, calculateCommission } from "./calculator";
+import { getCommissionRate } from "./calculator";
 
 export function groupAndCalculate(
-  rows: NormalizedRow[],
+  data: NormalizedRow[],
   company: Company,
   employeeRoles: EmployeeRolesMapping
 ): ProcessedData {
-  const headMap = new Map<string, Map<string, Map<string, Map<string, number>>>>();
+  const headGroups: HeadGroup[] = [];
 
-  rows.forEach((row) => {
-    if (!headMap.has(row.head)) {
-      headMap.set(row.head, new Map());
+  // Group by Head
+  const headMap = new Map<string, NormalizedRow[]>();
+  data.forEach((row) => {
+    const head = row.head || "Unknown";
+    if (!headMap.has(head)) {
+      headMap.set(head, []);
     }
-    const svMap = headMap.get(row.head)!;
-
-    if (!svMap.has(row.sv)) {
-      svMap.set(row.sv, new Map());
-    }
-    const typeMap = svMap.get(row.sv)!;
-
-    if (!typeMap.has(row.type)) {
-      typeMap.set(row.type, new Map());
-    }
-    const collectorMap = typeMap.get(row.type)!;
-
-    const currentPayment = collectorMap.get(row.collector) || 0;
-    collectorMap.set(row.collector, currentPayment + row.payment);
+    headMap.get(head)!.push(row);
   });
 
-  const headGroups: HeadGroup[] = [];
-  let grandTotalPayment = 0;
-  let grandTotalCommission = 0;
-
-  headMap.forEach((svMap, headName) => {
+  headMap.forEach((headRows, headName) => {
     const svGroups: SVGroup[] = [];
-    let headTotalPayment = 0;
-    let headTotalCommission = 0;
 
-    svMap.forEach((typeMap, svName) => {
-      const types: TypeGroup[] = [];
-      let svTotalPayment = 0;
-      let svTotalCommission = 0;
+    // Group by S.V within this Head
+    const svMap = new Map<string, NormalizedRow[]>();
+    headRows.forEach((row) => {
+      const sv = row.sv || "Unknown";
+      if (!svMap.has(sv)) {
+        svMap.set(sv, []);
+      }
+      svMap.get(sv)!.push(row);
+    });
 
-      typeMap.forEach((collectorMap, typeName) => {
+    svMap.forEach((svRows, svName) => {
+      const typeGroups: TypeGroup[] = [];
+
+      // Group by Type within this S.V
+      const typeMap = new Map<string, NormalizedRow[]>();
+      svRows.forEach((row) => {
+        const type = row.type || "Unknown";
+        if (!typeMap.has(type)) {
+          typeMap.set(type, []);
+        }
+        typeMap.get(type)!.push(row);
+      });
+
+      typeMap.forEach((typeRows, typeName) => {
         const collectors: CollectorData[] = [];
-        let typeTotalPayment = 0;
-        let typeTotalCommission = 0;
+
+        // Group by Collector within this Type
+        const collectorMap = new Map<string, number>();
+        typeRows.forEach((row) => {
+          const collector = row.collector || "Unknown";
+          const current = collectorMap.get(collector) || 0;
+          collectorMap.set(collector, current + row.payment);
+        });
 
         collectorMap.forEach((payment, collectorName) => {
-          const rate = getCollectorRate(company, typeName, collectorName, employeeRoles);
-          const commission = calculateCommission(payment, rate);
+          const rate = getCommissionRate(company, typeName, collectorName, employeeRoles);
+          const commission = (payment * rate) / 100;
 
           collectors.push({
             collector: collectorName,
@@ -66,59 +74,56 @@ export function groupAndCalculate(
             rate,
             commission,
           });
-
-          typeTotalPayment += payment;
-          typeTotalCommission += commission;
         });
 
+        // Sort collectors by name
         collectors.sort((a, b) => a.collector.localeCompare(b.collector));
 
-        const typeTotalRate = getTypeTotalRate(company, typeName);
-        const typeGroupCommission = calculateCommission(typeTotalPayment, typeTotalRate);
+        const totalPayment = collectors.reduce((sum, c) => sum + c.totalPayment, 0);
+        const totalCommission = collectors.reduce((sum, c) => sum + c.commission, 0);
 
-        types.push({
+        typeGroups.push({
           type: typeName,
           collectors,
-          totalPayment: typeTotalPayment,
-          totalRate: typeTotalRate,
-          totalCommission: typeTotalCommission + typeGroupCommission,
+          totalPayment,
+          totalRate: collectors.length > 0 ? (totalCommission / totalPayment) * 100 : 0,
+          totalCommission,
         });
-
-        svTotalPayment += typeTotalPayment;
-        svTotalCommission += typeTotalCommission + typeGroupCommission;
       });
 
-      types.sort((a, b) => {
-        if (a.type === "Active") return -1;
-        if (b.type === "Active") return 1;
-        return a.type.localeCompare(b.type);
-      });
+      // Sort types
+      typeGroups.sort((a, b) => a.type.localeCompare(b.type));
+
+      const totalPayment = typeGroups.reduce((sum, t) => sum + t.totalPayment, 0);
+      const totalCommission = typeGroups.reduce((sum, t) => sum + t.totalCommission, 0);
 
       svGroups.push({
         sv: svName,
-        types,
-        totalPayment: svTotalPayment,
-        totalCommission: svTotalCommission,
+        types: typeGroups,
+        totalPayment,
+        totalCommission,
       });
-
-      headTotalPayment += svTotalPayment;
-      headTotalCommission += svTotalCommission;
     });
 
+    // Sort SVs
     svGroups.sort((a, b) => a.sv.localeCompare(b.sv));
+
+    const totalPayment = svGroups.reduce((sum, sv) => sum + sv.totalPayment, 0);
+    const totalCommission = svGroups.reduce((sum, sv) => sum + sv.totalCommission, 0);
 
     headGroups.push({
       head: headName,
       svGroups,
-      totalPayment: headTotalPayment,
-      totalCommission: headTotalCommission,
+      totalPayment,
+      totalCommission,
     });
-
-    grandTotalPayment += headTotalPayment;
-    grandTotalCommission += headTotalCommission;
   });
 
+  // Sort heads
   headGroups.sort((a, b) => a.head.localeCompare(b.head));
+
+  const grandTotalPayment = headGroups.reduce((sum, h) => sum + h.totalPayment, 0);
+  const grandTotalCommission = headGroups.reduce((sum, h) => sum + h.totalCommission, 0);
 
   return {
     headGroups,
