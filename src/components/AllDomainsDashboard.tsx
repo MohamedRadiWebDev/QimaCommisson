@@ -13,11 +13,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Radar,
 } from "recharts";
 import type { Domain } from "@/lib/types";
 import { formatCurrency } from "@/lib/utils";
@@ -111,25 +106,6 @@ export default function AllDomainsDashboard({ domains }: AllDomainsDashboardProp
     return allCollectors
       .sort((a, b) => b.payment - a.payment)
       .slice(0, 5);
-  }, [domains]);
-
-  const domainPerformanceRadar = React.useMemo(() => {
-    const maxPayment = Math.max(...domains.map(d => d.processedData.grandTotalPayment));
-    const maxCommission = Math.max(...domains.map(d => d.processedData.grandTotalCommission));
-    
-    return domains.map((domain) => {
-      const collectorsCount = domain.processedData.headGroups.reduce((acc, hg) => 
-        acc + hg.svGroups.reduce((svAcc, svg) => 
-          svAcc + svg.types.reduce((tAcc, t) => tAcc + t.collectors.length, 0), 0), 0);
-      
-      return {
-        domain: domain.name.length > 10 ? domain.name.substring(0, 10) + "..." : domain.name,
-        fullName: domain.name,
-        payment: maxPayment > 0 ? (domain.processedData.grandTotalPayment / maxPayment) * 100 : 0,
-        commission: maxCommission > 0 ? (domain.processedData.grandTotalCommission / maxCommission) * 100 : 0,
-        collectors: collectorsCount * 10,
-      };
-    });
   }, [domains]);
 
   const CustomTooltip = ({ active, payload, label }: any) => {
@@ -269,17 +245,27 @@ export default function AllDomainsDashboard({ domains }: AllDomainsDashboardProp
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <div className="chart-container">
           <h3 className="text-lg font-bold text-slate-800 mb-4">مقارنة المدفوعات والعمولات</h3>
-          <div className="h-80">
+          <div className="h-[300px] sm:h-[350px] md:h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={domainComparisonData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="name" />
-                <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                <XAxis 
+                  dataKey="name" 
+                  tick={{ fontSize: 12 }}
+                  interval={0}
+                  angle={-45}
+                  textAnchor="end"
+                  height={80}
+                />
+                <YAxis 
+                  tickFormatter={(value) => formatCurrency(value)} 
+                  tick={{ fontSize: 12 }}
+                />
                 <Tooltip content={<CustomTooltip />} />
-                <Legend />
+                <Legend wrapperStyle={{ fontSize: '14px' }} />
                 <Bar
                   dataKey="payment"
                   fill="#10b981"
@@ -303,7 +289,7 @@ export default function AllDomainsDashboard({ domains }: AllDomainsDashboardProp
 
         <div className="chart-container">
           <h3 className="text-lg font-bold text-slate-800 mb-4">توزيع المدفوعات</h3>
-          <div className="h-80">
+          <div className="h-[300px] sm:h-[350px] md:h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -315,7 +301,7 @@ export default function AllDomainsDashboard({ domains }: AllDomainsDashboardProp
                     const displayName = String(name || "");
                     return `${displayName.length > 8 ? displayName.substring(0, 8) + "..." : displayName} (${((percent || 0) * 100).toFixed(0)}%)`;
                   }}
-                  outerRadius={100}
+                  outerRadius="70%"
                   fill="#8884d8"
                   dataKey="value"
                   animationBegin={0}
@@ -326,43 +312,12 @@ export default function AllDomainsDashboard({ domains }: AllDomainsDashboardProp
                   ))}
                 </Pie>
                 <Tooltip content={<CustomTooltip />} />
-                <Legend />
+                <Legend wrapperStyle={{ fontSize: '14px' }} />
               </PieChart>
             </ResponsiveContainer>
           </div>
         </div>
       </div>
-
-      {domains.length >= 2 && (
-        <div className="chart-container">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">مقارنة أداء النطاقات</h3>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart data={domainPerformanceRadar}>
-                <PolarGrid stroke="#e2e8f0" />
-                <PolarAngleAxis dataKey="domain" />
-                <PolarRadiusAxis angle={30} domain={[0, 100]} />
-                <Radar
-                  name="المدفوعات"
-                  dataKey="payment"
-                  stroke="#10b981"
-                  fill="#10b981"
-                  fillOpacity={0.3}
-                />
-                <Radar
-                  name="العمولات"
-                  dataKey="commission"
-                  stroke="#3b82f6"
-                  fill="#3b82f6"
-                  fillOpacity={0.3}
-                />
-                <Legend />
-                <Tooltip content={<CustomTooltip />} />
-              </RadarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      )}
 
       {topPerformers.length > 0 && (
         <div className="chart-container">

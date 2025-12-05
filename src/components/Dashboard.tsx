@@ -185,10 +185,10 @@ export default function Dashboard({ data, company }: DashboardProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <div className="chart-container">
           <h3 className="text-lg font-bold text-slate-800 mb-4">المدفوعات حسب النوع</h3>
-          <div className="h-80">
+          <div className="h-[300px] sm:h-[350px] md:h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -199,7 +199,7 @@ export default function Dashboard({ data, company }: DashboardProps) {
                   label={({ name, percent }) =>
                     `${name} (${((percent || 0) * 100).toFixed(0)}%)`
                   }
-                  outerRadius={100}
+                  outerRadius="70%"
                   fill="#8884d8"
                   dataKey="value"
                   animationBegin={0}
@@ -213,7 +213,7 @@ export default function Dashboard({ data, company }: DashboardProps) {
                   ))}
                 </Pie>
                 <Tooltip content={<CustomTooltip />} />
-                <Legend />
+                <Legend wrapperStyle={{ fontSize: '14px' }} />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -221,14 +221,23 @@ export default function Dashboard({ data, company }: DashboardProps) {
 
         <div className="chart-container">
           <h3 className="text-lg font-bold text-slate-800 mb-4">عمولات S.V</h3>
-          <div className="h-80">
+          <div className="h-[300px] sm:h-[350px] md:h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={svCommissionData} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis type="number" tickFormatter={(value) => formatCurrency(value)} />
-                <YAxis dataKey="name" type="category" width={80} />
+                <XAxis 
+                  type="number" 
+                  tickFormatter={(value) => formatCurrency(value)} 
+                  tick={{ fontSize: 12 }}
+                />
+                <YAxis 
+                  dataKey="name" 
+                  type="category" 
+                  width={100} 
+                  tick={{ fontSize: 12 }}
+                />
                 <Tooltip content={<CustomTooltip />} />
-                <Legend />
+                <Legend wrapperStyle={{ fontSize: '14px' }} />
                 <Bar
                   dataKey="commission"
                   fill="#6366f1"
@@ -242,16 +251,26 @@ export default function Dashboard({ data, company }: DashboardProps) {
           </div>
         </div>
 
-        <div className="chart-container lg:col-span-2">
+        <div className="chart-container xl:col-span-2">
           <h3 className="text-lg font-bold text-slate-800 mb-4">مقارنة عمولات Head</h3>
-          <div className="h-80">
+          <div className="h-[300px] sm:h-[350px] md:h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={headCommissionData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="name" />
-                <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                <XAxis 
+                  dataKey="name" 
+                  tick={{ fontSize: 12 }}
+                  interval={0}
+                  angle={-45}
+                  textAnchor="end"
+                  height={80}
+                />
+                <YAxis 
+                  tickFormatter={(value) => formatCurrency(value)} 
+                  tick={{ fontSize: 12 }}
+                />
                 <Tooltip content={<CustomTooltip />} />
-                <Legend />
+                <Legend wrapperStyle={{ fontSize: '14px' }} />
                 <Bar
                   dataKey="payment"
                   fill="#10b981"
