@@ -74,6 +74,9 @@ export interface ProcessedData {
   headGroups: HeadGroup[];
   grandTotalPayment: number;
   grandTotalCommission: number;
+  grandTotalSVCommission?: number;
+  grandTotalHeadCommission?: number;
+  grandTotalAllCommissions?: number;
 }
 
 export interface SVHeadSummaryRow {

@@ -142,10 +142,31 @@ export function groupAndCalculate(
 
   headGroups.sort((a, b) => b.totalPayment - a.totalPayment);
 
+  // Calculate SV and Head commissions for grand total
+  let grandTotalSVCommission = 0;
+  let grandTotalHeadCommission = 0;
+
+  headGroups.forEach((headGroup) => {
+    headGroup.svGroups.forEach((svGroup) => {
+      svGroup.types.forEach((typeGroup) => {
+        const svRate = getCommissionRateFromJson(company, typeGroup.type, "S.V", targetStatus);
+        const headRate = getCommissionRateFromJson(company, typeGroup.type, "Head", targetStatus);
+        
+        grandTotalSVCommission += (typeGroup.totalPayment * svRate) / 100;
+        grandTotalHeadCommission += (typeGroup.totalPayment * headRate) / 100;
+      });
+    });
+  });
+
+  const grandTotalAllCommissions = grandTotalCommission + grandTotalSVCommission + grandTotalHeadCommission;
+
   return {
     headGroups,
     grandTotalPayment,
     grandTotalCommission,
+    grandTotalSVCommission,
+    grandTotalHeadCommission,
+    grandTotalAllCommissions,
   };
 }
 

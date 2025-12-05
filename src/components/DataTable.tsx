@@ -145,8 +145,47 @@ export default function DataTable({ data, company }: DataTableProps) {
                   {formatCurrency(data.grandTotalPayment)}
                 </td>
                 <td className="px-4 py-4"></td>
-                <td className="px-4 py-4"></td>
+                <td className="px-4 py-4 text-base font-bold text-white tabular-nums">
+                  {formatCurrency(data.grandTotalCommission)}
+                </td>
               </tr>
+
+              {data.grandTotalAllCommissions !== undefined && (
+                <>
+                  <tr className="bg-gradient-to-r from-cyan-500 to-cyan-600">
+                    <td colSpan={4} className="px-4 py-3 text-sm font-bold text-white">
+                      إجمالي عمولات S.V
+                    </td>
+                    <td className="px-4 py-3"></td>
+                    <td className="px-4 py-3"></td>
+                    <td className="px-4 py-3 text-sm font-bold text-white tabular-nums">
+                      {formatCurrency(data.grandTotalSVCommission || 0)}
+                    </td>
+                  </tr>
+
+                  <tr className="bg-gradient-to-r from-purple-500 to-purple-600">
+                    <td colSpan={4} className="px-4 py-3 text-sm font-bold text-white">
+                      إجمالي عمولات Head
+                    </td>
+                    <td className="px-4 py-3"></td>
+                    <td className="px-4 py-3"></td>
+                    <td className="px-4 py-3 text-sm font-bold text-white tabular-nums">
+                      {formatCurrency(data.grandTotalHeadCommission || 0)}
+                    </td>
+                  </tr>
+
+                  <tr className="bg-gradient-to-r from-amber-600 to-amber-700">
+                    <td colSpan={4} className="px-4 py-4 text-lg font-bold text-white">
+                      Grand Total Commission (الكل)
+                    </td>
+                    <td className="px-4 py-4"></td>
+                    <td className="px-4 py-4"></td>
+                    <td className="px-4 py-4 text-lg font-bold text-white tabular-nums">
+                      {formatCurrency(data.grandTotalAllCommissions)}
+                    </td>
+                  </tr>
+                </>
+              )}
             </tbody>
           </table>
         </div>
