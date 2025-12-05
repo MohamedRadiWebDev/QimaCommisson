@@ -1,0 +1,193 @@
+I want you to build a complete full-stack Next.js 14 (App Router) project for calculating collectors' commissions based on an uploaded Excel file.
+
+This is a full dynamic system that works with any company and any Excel structure.
+
+=========================================================
+1) TECHNOLOGY
+=========================================================
+- Next.js 14 (App Router)
+- TypeScript
+- TailwindCSS
+- SheetJS (xlsx)
+- Zustand (or Context)
+- localStorage for saved employee roles
+- Full responsive UI
+
+=========================================================
+2) MAIN PURPOSE
+=========================================================
+The user will upload an Excel "domain" file.
+
+⚠️ IMPORTANT:  
+Different companies have different Excel column names.
+
+So the system must NOT assume fixed column names.
+
+=========================================================
+3) DYNAMIC COLUMN MAPPING (IMPORTANT)
+=========================================================
+After uploading the Excel file:
+
+→ Detect all column names from the first row  
+→ Show a UI screen to let the user manually select which Excel column corresponds to:
+
+- Payment column  
+- Type column  
+- Collector column  
+- s.v column  
+- head column  
+
+The user must be able to map these freely.
+
+Example UI:
+-----------------------------------------
+Select Payment Column:      [dropdown of all columns]
+Select Type Column:         [dropdown]
+Select Collector Column:    [dropdown]
+Select S.V Column:          [dropdown]
+Select Head Column:         [dropdown]
+-----------------------------------------
+
+Store this mapping in Zustand/global state.
+
+Only after the user confirms mapping → process the data.
+
+=========================================================
+4) DATA PROCESSING WORKFLOW
+=========================================================
+Once the mapping is set:
+
+1) Normalize data using the selected column mapping.
+2) Group rows in this structure:
+
+head  
+  → s.v  
+      → Type  
+          → collector  
+              Sum of Payment  
+              Rate  
+              Commission  
+
+3) Calculate totals at each level:
+- Type Total
+- s.v Total
+- head Total
+- Grand Total
+
+=========================================================
+5) COMPANY SUPPORT
+=========================================================
+System should support multiple companies.  
+For now implement only "Waseela".
+
+After the user uploads a file, they will select:
+[ Company: Waseela ]
+
+=========================================================
+6) WASEELA COMPANY LOGIC
+=========================================================
+Logic depends on the Type column:
+
+------------------------------------------
+TYPE = "Active"
+------------------------------------------
+Default Rates:
+- سلمي يونس محمد → 1.00%
+- كريمه هانى → 1.50%
+- مريم جابر إسماعيل → 1.00%
+- ياسمين محمد رشاد الشحات → 1.00%
+
+Active Total Rate = 0.50%
+
+------------------------------------------
+TYPE = "W.O"
+------------------------------------------
+Default Rates:
+- سلمي يونس محمد → 1.50%
+- كريمه هانى → 2.00%
+- مريم جابر إسماعيل → 1.50%
+- ياسمين محمد رشاد الشحات → 1.50%
+
+W.O Total Rate = 0.75%
+
+=========================================================
+7) EMPLOYEE ROLES MAPPING TAB
+=========================================================
+Create a new page:
+
+/app/roles/page.tsx
+
+This tab should allow:
+
+- Viewing all unique employees from collector column (from last uploaded file)
+- Assign each employee a role:
+  - Collector
+  - Telesales
+  - Production
+- Optional custom rate override
+- Save button → save mapping to localStorage
+
+This mapping MUST override company rules.
+
+Example:
+If employee role has a custom rate (e.g., 1.80%)
+→ use it instead of default company rate.
+
+=========================================================
+8) HOW ROLES AFFECT CALCULATIONS
+=========================================================
+For each collected row:
+
+1) Check collector name  
+2) Load mapping from localStorage  
+3) If employee role = Collector → apply collector logic  
+4) If employee role = Telesales → (future logic) skip collector logic  
+5) If employee role = Production → (future logic) skip collector logic  
+6) If rate override exists → use override  
+7) Otherwise → use company default rates  
+
+If no mapping exists → default role = Collector.
+
+=========================================================
+9) REQUIRED PAGES
+=========================================================
+/app/upload/page.tsx
+- Upload Excel
+- Show column mapping dropdowns
+- Show processed table
+- Show totals and grand totals
+- Company selector
+
+/app/roles/page.tsx
+- Employee Roles Mapping manager
+
+/components:
+/components/FileUploader.tsx
+/components/ColumnMapping.tsx
+/components/DataTable.tsx
+/components/RoleManager.tsx
+
+/lib:
+/lib/parseExcel.ts
+/lib/grouping.ts
+/lib/calculator.ts (Waseela logic + mapping override)
+
+=========================================================
+10) FINAL DELIVERABLE
+=========================================================
+Generate the **full complete project**, including:
+
+- All pages  
+- All components  
+- Full UI  
+- Full logic  
+- Tailwind config  
+- package.json  
+- Grouping logic  
+- Dynamic column mapping  
+- Role manager tab  
+- Waseela company rules  
+- Grand totals  
+- Responsive layout
+
+The final code must be fully functional and ready to run immediately on Replit.
