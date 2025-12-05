@@ -90,36 +90,6 @@ export default function RolesPage() {
       )}
 
       <RoleManager collectors={collectors} />
-
-      <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
-        <h3 className="text-lg font-bold text-slate-800 mb-3">How Roles Work</h3>
-        <div className="grid md:grid-cols-3 gap-4 text-sm">
-          <div>
-            <h4 className="font-semibold text-emerald-700 mb-1">Collector</h4>
-            <p className="text-slate-600">
-              Default role. Uses company-specific commission rates based on Type (Active/W.O).
-            </p>
-          </div>
-          <div>
-            <h4 className="font-semibold text-violet-700 mb-1">Telesales</h4>
-            <p className="text-slate-600">
-              Commission is set to 0% unless a custom rate is specified.
-            </p>
-          </div>
-          <div>
-            <h4 className="font-semibold text-amber-700 mb-1">Production</h4>
-            <p className="text-slate-600">
-              Commission is set to 0% unless a custom rate is specified.
-            </p>
-          </div>
-        </div>
-        <div className="mt-4 pt-4 border-t border-slate-200">
-          <p className="text-sm text-slate-600">
-            <strong className="text-slate-800">Custom Rate:</strong> When you set a custom rate for any employee, it will
-            override the company&apos;s default rate regardless of their role or type.
-          </p>
-        </div>
-      </div>
     </div>
   );
 }
