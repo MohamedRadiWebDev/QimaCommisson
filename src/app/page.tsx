@@ -25,7 +25,7 @@ export default function Home() {
   return (
     <div className="max-w-7xl mx-auto">
       <div className="mb-8 slide-up" style={{ opacity: 0, animationDelay: "0s", animationFillMode: "forwards" }}>
-        <h1 className="text-4xl font-bold text-slate-800 mb-3">حاسبة العمولات</h1>
+        <h1 className="text-4xl font-bold text-slate-800 mb-3">حساب عمولات بدون عناء المحاسبين</h1>
         <p className="text-lg text-slate-600">
           ارفع ملفات Excel، حدد الأعمدة، واحسب العمولات تلقائياً
         </p>
