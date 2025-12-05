@@ -2,8 +2,8 @@
 
 import React from "react";
 import { formatCurrency, formatPercent } from "@/lib/utils";
-import type { ProcessedData, Company, SVHeadSummary } from "@/lib/types";
-import { generateSVHeadSummary } from "@/lib/grouping";
+import type { ProcessedData, Company } from "@/lib/types";
+import { generateSVHeadDetailedSummary } from "@/lib/grouping";
 
 interface DataTableProps {
   data: ProcessedData;
@@ -19,7 +19,7 @@ export default function DataTable({ data, company }: DataTableProps) {
     );
   }
 
-  const svHeadSummary: SVHeadSummary = generateSVHeadSummary(data, company);
+  const svHeadDetailedSummary = generateSVHeadDetailedSummary(data, company);
 
   return (
     <div className="space-y-8">
@@ -141,54 +141,65 @@ export default function DataTable({ data, company }: DataTableProps) {
       </div>
 
       <div className="bg-white rounded-xl shadow-lg border border-slate-200">
-        <div className="bg-gradient-to-r from-orange-500 to-amber-500 px-6 py-4 rounded-t-xl">
-          <h3 className="text-lg font-bold text-white">عمولات S.V و Head</h3>
-          <p className="text-orange-100 text-sm">ملخص العمولات حسب النوع</p>
+        <div className="bg-gradient-to-r from-indigo-500 to-blue-500 px-6 py-4 rounded-t-xl">
+          <h3 className="text-lg font-bold text-white">عمولات S.V</h3>
+          <p className="text-indigo-100 text-sm">ملخص عمولات كل S.V</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="bg-slate-50 border-b-2 border-slate-200">
-                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Role</th>
-                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Type</th>
-                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Payment</th>
-                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Rate</th>
+                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">S.V Name</th>
+                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Total Payment</th>
                 <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Commission</th>
               </tr>
             </thead>
             <tbody>
-              {svHeadSummary.rows.map((row, idx) => (
-                <React.Fragment key={idx}>
-                  <tr className="border-b border-slate-100 hover:bg-indigo-50">
-                    <td className="px-4 py-3 text-sm font-bold text-indigo-700">S.V</td>
-                    <td className="px-4 py-3 text-sm font-medium text-slate-800">{row.type}</td>
-                    <td className="px-4 py-3 text-sm text-slate-800">{formatCurrency(row.totalPayment)}</td>
-                    <td className="px-4 py-3 text-sm text-indigo-600">{formatPercent(row.svRate)}</td>
-                    <td className="px-4 py-3 text-sm font-semibold text-indigo-600">{formatCurrency(row.svCommission)}</td>
-                  </tr>
-                  <tr className="border-b border-slate-200 hover:bg-purple-50">
-                    <td className="px-4 py-3 text-sm font-bold text-purple-700">Head</td>
-                    <td className="px-4 py-3 text-sm font-medium text-slate-800">{row.type}</td>
-                    <td className="px-4 py-3 text-sm text-slate-800">{formatCurrency(row.totalPayment)}</td>
-                    <td className="px-4 py-3 text-sm text-purple-600">{formatPercent(row.headRate)}</td>
-                    <td className="px-4 py-3 text-sm font-semibold text-purple-600">{formatCurrency(row.headCommission)}</td>
-                  </tr>
-                </React.Fragment>
+              {svHeadDetailedSummary.svDetails.map((sv, idx) => (
+                <tr key={idx} className="border-b border-slate-100 hover:bg-indigo-50">
+                  <td className="px-4 py-3 text-sm font-medium text-slate-800">{sv.name}</td>
+                  <td className="px-4 py-3 text-sm text-slate-800">{formatCurrency(sv.totalPayment)}</td>
+                  <td className="px-4 py-3 text-sm font-semibold text-indigo-600">{formatCurrency(sv.totalCommission)}</td>
+                </tr>
               ))}
 
               <tr className="bg-indigo-100 border-t-2 border-indigo-400">
                 <td className="px-4 py-4 text-sm font-bold text-indigo-900">مجموع S.V</td>
-                <td className="px-4 py-4"></td>
-                <td className="px-4 py-4 text-sm font-bold text-indigo-900">{formatCurrency(svHeadSummary.totalPayment)}</td>
-                <td className="px-4 py-4"></td>
-                <td className="px-4 py-4 text-sm font-bold text-indigo-700">{formatCurrency(svHeadSummary.totalSVCommission)}</td>
+                <td className="px-4 py-4 text-sm font-bold text-indigo-900">{formatCurrency(svHeadDetailedSummary.totalPayment)}</td>
+                <td className="px-4 py-4 text-sm font-bold text-indigo-700">{formatCurrency(svHeadDetailedSummary.totalSVCommission)}</td>
               </tr>
-              <tr className="bg-purple-100 border-b-2 border-purple-400">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-lg border border-slate-200">
+        <div className="bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-4 rounded-t-xl">
+          <h3 className="text-lg font-bold text-white">عمولات Head</h3>
+          <p className="text-purple-100 text-sm">ملخص عمولات كل Head</p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-slate-50 border-b-2 border-slate-200">
+                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Head Name</th>
+                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Total Payment</th>
+                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Commission</th>
+              </tr>
+            </thead>
+            <tbody>
+              {svHeadDetailedSummary.headDetails.map((head, idx) => (
+                <tr key={idx} className="border-b border-slate-100 hover:bg-purple-50">
+                  <td className="px-4 py-3 text-sm font-medium text-slate-800">{head.name}</td>
+                  <td className="px-4 py-3 text-sm text-slate-800">{formatCurrency(head.totalPayment)}</td>
+                  <td className="px-4 py-3 text-sm font-semibold text-purple-600">{formatCurrency(head.totalCommission)}</td>
+                </tr>
+              ))}
+
+              <tr className="bg-purple-100 border-t-2 border-purple-400">
                 <td className="px-4 py-4 text-sm font-bold text-purple-900">مجموع Head</td>
-                <td className="px-4 py-4"></td>
-                <td className="px-4 py-4 text-sm font-bold text-purple-900">{formatCurrency(svHeadSummary.totalPayment)}</td>
-                <td className="px-4 py-4"></td>
-                <td className="px-4 py-4 text-sm font-bold text-purple-700">{formatCurrency(svHeadSummary.totalHeadCommission)}</td>
+                <td className="px-4 py-4 text-sm font-bold text-purple-900">{formatCurrency(svHeadDetailedSummary.totalPayment)}</td>
+                <td className="px-4 py-4 text-sm font-bold text-purple-700">{formatCurrency(svHeadDetailedSummary.totalHeadCommission)}</td>
               </tr>
             </tbody>
           </table>

@@ -181,6 +181,111 @@ export function generateSVHeadSummary(data: ProcessedData, company: Company): SV
   };
 }
 
+export interface SVDetail {
+  name: string;
+  totalPayment: number;
+  totalCommission: number;
+}
+
+export interface HeadDetail {
+  name: string;
+  totalPayment: number;
+  totalCommission: number;
+}
+
+export interface SVHeadDetailedSummary {
+  svDetails: SVDetail[];
+  headDetails: HeadDetail[];
+  totalSVCommission: number;
+  totalHeadCommission: number;
+  totalPayment: number;
+}
+
+export function generateSVHeadDetailedSummary(data: ProcessedData, company: Company): SVHeadDetailedSummary {
+  const svMap = new Map<string, { payment: number; commission: number }>();
+  const headMap = new Map<string, { payment: number; commission: number }>();
+  
+  let totalPayment = 0;
+
+  data.headGroups.forEach((headGroup) => {
+    headGroup.svGroups.forEach((svGroup) => {
+      let svTotalPayment = 0;
+      let svTotalCommission = 0;
+
+      svGroup.types.forEach((typeGroup) => {
+        const svRate = getCommissionRateFromJson(company, typeGroup.type, "S.V", "No Target");
+        const svCommission = (typeGroup.totalPayment * svRate) / 100;
+        
+        svTotalPayment += typeGroup.totalPayment;
+        svTotalCommission += svCommission;
+      });
+
+      const currentSV = svMap.get(svGroup.sv) || { payment: 0, commission: 0 };
+      svMap.set(svGroup.sv, {
+        payment: currentSV.payment + svTotalPayment,
+        commission: currentSV.commission + svTotalCommission
+      });
+    });
+
+    let headTotalPayment = 0;
+    let headTotalCommission = 0;
+
+    headGroup.svGroups.forEach((svGroup) => {
+      svGroup.types.forEach((typeGroup) => {
+        const headRate = getCommissionRateFromJson(company, typeGroup.type, "Head", "No Target");
+        const headCommission = (typeGroup.totalPayment * headRate) / 100;
+        
+        headTotalPayment += typeGroup.totalPayment;
+        headTotalCommission += headCommission;
+      });
+    });
+
+    const currentHead = headMap.get(headGroup.head) || { payment: 0, commission: 0 };
+    headMap.set(headGroup.head, {
+      payment: currentHead.payment + headTotalPayment,
+      commission: currentHead.commission + headTotalCommission
+    });
+    
+    totalPayment += headTotalPayment;
+  });
+
+  const svDetails: SVDetail[] = [];
+  let totalSVCommission = 0;
+
+  svMap.forEach((data, name) => {
+    svDetails.push({
+      name,
+      totalPayment: data.payment,
+      totalCommission: data.commission
+    });
+    totalSVCommission += data.commission;
+  });
+
+  svDetails.sort((a, b) => b.totalPayment - a.totalPayment);
+
+  const headDetails: HeadDetail[] = [];
+  let totalHeadCommission = 0;
+
+  headMap.forEach((data, name) => {
+    headDetails.push({
+      name,
+      totalPayment: data.payment,
+      totalCommission: data.commission
+    });
+    totalHeadCommission += data.commission;
+  });
+
+  headDetails.sort((a, b) => b.totalPayment - a.totalPayment);
+
+  return {
+    svDetails,
+    headDetails,
+    totalSVCommission,
+    totalHeadCommission,
+    totalPayment
+  };
+}
+
 export function groupDataByType(
   data: RawDataRow[],
   targetStatus: "No Target" | "Target" | "Over Target" = "No Target"
