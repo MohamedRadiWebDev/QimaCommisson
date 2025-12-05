@@ -10,6 +10,7 @@ import type {
   EmployeeRolesMapping,
   EmployeeRole,
   TargetStatus,
+  Domain,
 } from "./types";
 
 interface AppState {
@@ -95,6 +96,75 @@ export const useRolesStore = create<RolesState>()(
     }),
     {
       name: "employee-roles-storage",
+    }
+  )
+);
+
+interface DomainsState {
+  domains: Domain[];
+  activeDomainId: string | null;
+  addDomain: (domain: Omit<Domain, "id" | "createdAt" | "updatedAt">) => string;
+  updateDomain: (id: string, updates: Partial<Omit<Domain, "id" | "createdAt">>) => void;
+  removeDomain: (id: string) => void;
+  setActiveDomain: (id: string | null) => void;
+  getDomain: (id: string) => Domain | undefined;
+  clearAllDomains: () => void;
+}
+
+export const useDomainsStore = create<DomainsState>()(
+  persist(
+    (set, get) => ({
+      domains: [],
+      activeDomainId: null,
+
+      addDomain: (domainData) => {
+        const id = `domain-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        const now = Date.now();
+        const newDomain: Domain = {
+          ...domainData,
+          id,
+          createdAt: now,
+          updatedAt: now,
+        };
+        set((state) => ({
+          domains: [...state.domains, newDomain],
+          activeDomainId: id,
+        }));
+        return id;
+      },
+
+      updateDomain: (id, updates) =>
+        set((state) => ({
+          domains: state.domains.map((domain) =>
+            domain.id === id
+              ? { ...domain, ...updates, updatedAt: Date.now() }
+              : domain
+          ),
+        })),
+
+      removeDomain: (id) =>
+        set((state) => {
+          const newDomains = state.domains.filter((d) => d.id !== id);
+          const newActiveId =
+            state.activeDomainId === id
+              ? newDomains.length > 0
+                ? newDomains[0].id
+                : null
+              : state.activeDomainId;
+          return {
+            domains: newDomains,
+            activeDomainId: newActiveId,
+          };
+        }),
+
+      setActiveDomain: (id) => set({ activeDomainId: id }),
+
+      getDomain: (id) => get().domains.find((d) => d.id === id),
+
+      clearAllDomains: () => set({ domains: [], activeDomainId: null }),
+    }),
+    {
+      name: "domains-storage",
     }
   )
 );

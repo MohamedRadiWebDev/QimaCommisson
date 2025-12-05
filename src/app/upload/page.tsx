@@ -5,7 +5,7 @@ import FileUploader from "@/components/FileUploader";
 import ColumnMapping from "@/components/ColumnMapping";
 import DataTable from "@/components/DataTable";
 import ExportButtons from "@/components/ExportButtons";
-import { useAppStore, useRolesStore } from "@/lib/store";
+import { useAppStore, useRolesStore, useDomainsStore } from "@/lib/store";
 import { parseExcelFile, normalizeData, getUniqueCollectors } from "@/lib/parseExcel";
 import { groupAndCalculate } from "@/lib/grouping";
 import type { ColumnMapping as ColumnMappingType, Company, TargetStatus } from "@/lib/types";
@@ -32,7 +32,11 @@ export default function UploadPage() {
   } = useAppStore();
 
   const { employeeRoles } = useRolesStore();
+  const { addDomain } = useDomainsStore();
   const [step, setStep] = useState<"upload" | "mapping" | "results">("upload");
+  const [domainName, setDomainName] = useState("");
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   const handleFileSelect = useCallback(
     async (file: File) => {
@@ -110,7 +114,25 @@ export default function UploadPage() {
   const handleReset = useCallback(() => {
     reset();
     setStep("upload");
+    setDomainName("");
+    setShowSaveModal(false);
+    setIsSaved(false);
   }, [reset]);
+
+  const handleSaveDomain = useCallback(() => {
+    if (!processedData || !domainName.trim()) return;
+    
+    addDomain({
+      name: domainName.trim(),
+      company: selectedCompany,
+      targetStatus: selectedTargetStatus,
+      processedData: processedData,
+    });
+    
+    setShowSaveModal(false);
+    setIsSaved(true);
+    setDomainName("");
+  }, [processedData, domainName, selectedCompany, selectedTargetStatus, addDomain]);
 
   useEffect(() => {
     if (columnMapping && rawData.length > 0 && step === "results") {
@@ -207,16 +229,29 @@ export default function UploadPage() {
               />
             </div>
             <div className="space-y-4">
-              <CompanySelector
-                selectedCompany={selectedCompany}
-                onCompanyChange={handleCompanyChange}
-              />
               <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4">
                 <label className="block text-sm font-bold text-slate-700 mb-2">
-                  Target Status
+                  الشركة
                 </label>
                 <p className="text-xs text-slate-500 mb-3">
-                  Select commission rate type
+                  اختر الشركة لحساب العمولات
+                </p>
+                <select
+                  value={selectedCompany}
+                  onChange={(e) => handleCompanyChange(e.target.value as Company)}
+                  className="w-full px-4 py-2.5 border-2 border-blue-400 bg-blue-50 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-slate-800 font-medium"
+                >
+                  <option value="Waseela">Waseela</option>
+                  <option value="Ghazala">Ghazala</option>
+                  <option value="Marsa">Marsa</option>
+                </select>
+              </div>
+              <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4">
+                <label className="block text-sm font-bold text-slate-700 mb-2">
+                  حالة التارجت
+                </label>
+                <p className="text-xs text-slate-500 mb-3">
+                  اختر نوع معدل العمولة
                 </p>
                 <select
                   value={selectedTargetStatus}
@@ -283,7 +318,7 @@ export default function UploadPage() {
             <div className="flex flex-wrap gap-4 items-center">
               <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-3">
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Target Status
+                  حالة التارجت
                 </label>
                 <select
                   value={selectedTargetStatus}
@@ -295,11 +330,80 @@ export default function UploadPage() {
                   <option value="Over Target">Over Target</option>
                 </select>
               </div>
+              {!isSaved ? (
+                <button
+                  onClick={() => setShowSaveModal(true)}
+                  className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-lg hover:from-emerald-600 hover:to-teal-600 transition-all flex items-center gap-2 font-semibold shadow-md"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                  </svg>
+                  حفظ كنطاق
+                </button>
+              ) : (
+                <div className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-lg flex items-center gap-2 font-semibold">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  تم الحفظ!
+                </div>
+              )}
             </div>
             <ExportButtons data={processedData} company={selectedCompany} />
           </div>
 
           <DataTable data={processedData} company={selectedCompany} />
+        </div>
+      )}
+
+      {showSaveModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 slide-up">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-emerald-100 p-3 rounded-xl">
+                <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-slate-800">حفظ كنطاق جديد</h3>
+                <p className="text-sm text-slate-500">أدخل اسم النطاق للحفظ في الصفحة الرئيسية</p>
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm font-bold text-slate-700 mb-2">
+                اسم النطاق
+              </label>
+              <input
+                type="text"
+                value={domainName}
+                onChange={(e) => setDomainName(e.target.value)}
+                placeholder="مثال: شركة Waseela - ديسمبر 2025"
+                className="w-full px-4 py-3 border-2 border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors text-slate-800 placeholder:text-slate-400"
+                autoFocus
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowSaveModal(false);
+                  setDomainName("");
+                }}
+                className="flex-1 px-4 py-2.5 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors font-semibold"
+              >
+                إلغاء
+              </button>
+              <button
+                onClick={handleSaveDomain}
+                disabled={!domainName.trim()}
+                className="flex-1 px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-lg hover:from-emerald-600 hover:to-teal-600 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                حفظ النطاق
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -1,12 +1,26 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
-import { useAppStore } from "@/lib/store";
+import { useDomainsStore } from "@/lib/store";
 import Dashboard from "@/components/Dashboard";
+import DomainTabs from "@/components/DomainTabs";
+import AllDomainsDashboard from "@/components/AllDomainsDashboard";
 
 export default function Home() {
-  const { processedData, selectedCompany } = useAppStore();
-  const hasData = processedData && processedData.headGroups && processedData.headGroups.length > 0;
+  const { domains, activeDomainId, getDomain } = useDomainsStore();
+  const [showAll, setShowAll] = React.useState(true);
+  
+  const activeDomain = activeDomainId ? getDomain(activeDomainId) : null;
+  const hasAnyData = domains.length > 0;
+
+  const handleSelectAll = () => {
+    setShowAll(true);
+  };
+
+  const handleSelectDomain = (id: string) => {
+    setShowAll(false);
+  };
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -63,8 +77,18 @@ export default function Home() {
         </Link>
       </div>
 
-      {hasData ? (
-        <Dashboard data={processedData} company={selectedCompany} />
+      {hasAnyData && (
+        <DomainTabs onSelectAll={handleSelectAll} onSelectDomain={handleSelectDomain} isAllSelected={showAll} />
+      )}
+
+      {hasAnyData ? (
+        showAll ? (
+          <AllDomainsDashboard domains={domains} />
+        ) : (
+          activeDomain && (
+            <Dashboard data={activeDomain.processedData} company={activeDomain.company} />
+          )
+        )
       ) : (
         <div className="bg-gradient-to-br from-emerald-50 to-blue-50 rounded-xl p-8 border border-emerald-200 slide-up" style={{ opacity: 0, animationDelay: "0.2s", animationFillMode: "forwards" }}>
           <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center">

@@ -103,3 +103,13 @@ export interface Employee {
 export interface EmployeeRolesMapping {
   [name: string]: EmployeeRole;
 }
+
+export interface Domain {
+  id: string;
+  name: string;
+  company: Company;
+  targetStatus: TargetStatus;
+  processedData: ProcessedData;
+  createdAt: number;
+  updatedAt: number;
+}
