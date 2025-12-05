@@ -55,7 +55,7 @@ export function normalizeData(
     collector: string;
     sv: string;
     head: string;
-    employeeType: string;
+    employeeType?: string;
   }
 ) {
   return rows
@@ -71,7 +71,7 @@ export function normalizeData(
         collector: String(row[mapping.collector] || "").trim(),
         sv: String(row[mapping.sv] || "").trim(),
         head: String(row[mapping.head] || "").trim(),
-        employeeType: String(row[mapping.employeeType] || "collector").trim(),
+        employeeType: mapping.employeeType ? String(row[mapping.employeeType] || "collector").trim() : "collector",
       };
     })
     .filter((row) => row.payment > 0 && row.collector);

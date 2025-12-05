@@ -4,7 +4,7 @@ export interface ColumnMapping {
   collector: string;
   sv: string;
   head: string;
-  employeeType: string;
+  employeeType?: string;
 }
 
 export interface RawDataRow {

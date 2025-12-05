@@ -16,7 +16,6 @@ const MAPPING_FIELDS = [
   { key: "collector", label: "Collector Column", description: "Column containing collector names", required: true },
   { key: "sv", label: "S.V Column", description: "Column containing S.V (supervisor) names", required: true },
   { key: "head", label: "Head Column", description: "Column containing head/manager names", required: true },
-  { key: "employeeType", label: "Employee Type Column", description: "Column containing employee type (Tele, Collector, etc.)", required: true },
 ] as const;
 
 export default function ColumnMapping({
@@ -30,7 +29,6 @@ export default function ColumnMapping({
     collector: initialMapping?.collector || "",
     sv: initialMapping?.sv || "",
     head: initialMapping?.head || "",
-    employeeType: initialMapping?.employeeType || "",
   });
 
   useEffect(() => {
@@ -54,15 +52,7 @@ export default function ColumnMapping({
         if (lowerCol === "head" || lowerCol.includes("manager")) {
           if (!autoMapping.head) autoMapping.head = col;
         }
-        if (lowerCol.includes("employee") && lowerCol.includes("type")) {
-          if (!autoMapping.employeeType) autoMapping.employeeType = col;
-        }
-        if (lowerCol === "emp type" || lowerCol === "emptype" || lowerCol === "emp_type") {
-          if (!autoMapping.employeeType) autoMapping.employeeType = col;
-        }
-        if (lowerCol === "tele" || lowerCol === "collector type") {
-          if (!autoMapping.employeeType) autoMapping.employeeType = col;
-        }
+        
       });
 
       if (Object.keys(autoMapping).length > 0) {

@@ -57,7 +57,7 @@ export function groupAndCalculate(
       typeMap.forEach((typeRows, typeName) => {
         const collectors: CollectorData[] = [];
 
-        const collectorMap = new Map<string, { payment: number; employeeType: string }>();
+        const collectorMap = new Map<string, { payment: number }>();
         typeRows.forEach((row) => {
           const collector = row.collector || "Unknown";
           const current = collectorMap.get(collector);
@@ -65,8 +65,7 @@ export function groupAndCalculate(
             current.payment += row.payment;
           } else {
             collectorMap.set(collector, { 
-              payment: row.payment, 
-              employeeType: row.employeeType || "collector" 
+              payment: row.payment
             });
           }
         });
@@ -74,7 +73,8 @@ export function groupAndCalculate(
         collectorMap.forEach((data, collectorName) => {
           const employeeRole = employeeRoles[collectorName];
           
-          let employeeType = data.employeeType;
+          // Get employee type from role, default to collector
+          let employeeType = "collector";
           if (employeeRole?.role === "Telesales") {
             employeeType = "Tele";
           } else if (employeeRole?.role === "Production") {
