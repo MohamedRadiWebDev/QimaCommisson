@@ -191,17 +191,15 @@ export function getCollectorRate(
   employeeRoles: EmployeeRolesMapping,
   targetStatus: "No Target" | "Target" | "Over Target" = "No Target"
 ): number {
-  const employeeRole = employeeRoles[collectorName];
-  
-  if (employeeRole?.customRate !== undefined && employeeRole.customRate > 0) {
-    return employeeRole.customRate;
-  }
-
+  // Default employee type is collector
   let employeeType = "collector";
-  if (employeeRole?.role === "Telesales") {
-    employeeType = "Tele";
-  } else if (employeeRole?.role === "Production") {
-    employeeType = "production";
+  
+  // Check if employee has a role defined in employeeRoles
+  const employeeRole = employeeRoles[collectorName];
+  if (employeeRole?.role === "S.V") {
+    employeeType = "S.V";
+  } else if (employeeRole?.role === "Head") {
+    employeeType = "Head";
   } else if (employeeRole?.role === "Collector") {
     employeeType = "collector";
   }

@@ -74,17 +74,20 @@ export function groupAndCalculate(
 
         collectorMap.forEach((payment, collectorName) => {
           let employeeType = employeeTypeMap.get(collectorName) || "collector";
+          let lookupType = typeName;
           
+          // For production employees, we need to use "production" as employee type
+          // and the productionSubType as the Type field in the lookup
           if (employeeType === "production") {
             const productionSubType = employeeSubTypeMap.get(collectorName);
             if (productionSubType === "tele") {
-              employeeType = "tele";
+              lookupType = "Tele";
             } else {
-              employeeType = "collector";
+              lookupType = "collector";
             }
           }
           
-          const rate = getCommissionRateFromJson(company, typeName, employeeType, targetStatus);
+          const rate = getCommissionRateFromJson(company, lookupType, employeeType, targetStatus);
           const commission = (payment * rate) / 100;
 
           collectors.push({
