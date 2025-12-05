@@ -11,11 +11,12 @@ interface ColumnMappingProps {
 }
 
 const MAPPING_FIELDS = [
-  { key: "payment", label: "Payment Column", description: "Column containing payment amounts" },
-  { key: "type", label: "Type Column", description: "Column containing type (Active, W.O, etc.)" },
-  { key: "collector", label: "Collector Column", description: "Column containing collector names" },
-  { key: "sv", label: "S.V Column", description: "Column containing S.V (supervisor) names" },
-  { key: "head", label: "Head Column", description: "Column containing head/manager names" },
+  { key: "payment", label: "Payment Column", description: "Column containing payment amounts", required: true },
+  { key: "type", label: "Type Column", description: "Column containing type (Active, W.O, etc.)", required: true },
+  { key: "collector", label: "Collector Column", description: "Column containing collector names", required: true },
+  { key: "sv", label: "S.V Column", description: "Column containing S.V (supervisor) names", required: true },
+  { key: "head", label: "Head Column", description: "Column containing head/manager names", required: true },
+  { key: "employeeType", label: "Employee Type Column", description: "Column containing employee type (Tele, Collector, etc.)", required: true },
 ] as const;
 
 export default function ColumnMapping({
@@ -29,6 +30,7 @@ export default function ColumnMapping({
     collector: initialMapping?.collector || "",
     sv: initialMapping?.sv || "",
     head: initialMapping?.head || "",
+    employeeType: initialMapping?.employeeType || "",
   });
 
   useEffect(() => {
@@ -43,7 +45,7 @@ export default function ColumnMapping({
         if (lowerCol === "type" || lowerCol.includes("bucket")) {
           if (!autoMapping.type) autoMapping.type = col;
         }
-        if (lowerCol.includes("collector")) {
+        if (lowerCol.includes("collector") && !lowerCol.includes("type")) {
           if (!autoMapping.collector) autoMapping.collector = col;
         }
         if (lowerCol === "s.v" || lowerCol === "sv" || lowerCol.includes("supervisor")) {
@@ -51,6 +53,15 @@ export default function ColumnMapping({
         }
         if (lowerCol === "head" || lowerCol.includes("manager")) {
           if (!autoMapping.head) autoMapping.head = col;
+        }
+        if (lowerCol.includes("employee") && lowerCol.includes("type")) {
+          if (!autoMapping.employeeType) autoMapping.employeeType = col;
+        }
+        if (lowerCol === "emp type" || lowerCol === "emptype" || lowerCol === "emp_type") {
+          if (!autoMapping.employeeType) autoMapping.employeeType = col;
+        }
+        if (lowerCol === "tele" || lowerCol === "collector type") {
+          if (!autoMapping.employeeType) autoMapping.employeeType = col;
         }
       });
 
@@ -64,7 +75,7 @@ export default function ColumnMapping({
     setMapping((prev) => ({ ...prev, [field]: value }));
   };
 
-  const isComplete = MAPPING_FIELDS.every((field) => mapping[field.key]);
+  const isComplete = MAPPING_FIELDS.filter(f => f.required).every((field) => mapping[field.key]);
 
   const handleConfirm = () => {
     if (isComplete) {
@@ -85,6 +96,7 @@ export default function ColumnMapping({
             <div>
               <label className="block text-sm font-semibold text-slate-700">
                 {field.label}
+                {field.required && <span className="text-red-500 ml-1">*</span>}
               </label>
               <p className="text-xs text-slate-500">{field.description}</p>
             </div>

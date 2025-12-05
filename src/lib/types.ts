@@ -4,6 +4,7 @@ export interface ColumnMapping {
   collector: string;
   sv: string;
   head: string;
+  employeeType: string;
 }
 
 export interface RawDataRow {
@@ -16,7 +17,10 @@ export interface NormalizedRow {
   collector: string;
   sv: string;
   head: string;
+  employeeType: string;
 }
+
+export type TargetStatus = "No Target" | "Target" | "Over Target";
 
 export interface Employee {
   name: string;

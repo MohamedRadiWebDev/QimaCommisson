@@ -9,13 +9,15 @@ import type {
   CollectorData,
   SVHeadSummary,
   SVHeadSummaryRow,
+  TargetStatus,
 } from "./types";
-import { getCollectorRate, calculateSVCommission, calculateHeadCommission } from "./calculator";
+import { getCommissionRateFromJson, calculateSVCommission, calculateHeadCommission } from "./calculator";
 
 export function groupAndCalculate(
   data: NormalizedRow[],
   company: Company,
-  employeeRoles: EmployeeRolesMapping
+  employeeRoles: EmployeeRolesMapping,
+  targetStatus: TargetStatus = "No Target"
 ): ProcessedData {
   const headGroups: HeadGroup[] = [];
 
@@ -55,20 +57,44 @@ export function groupAndCalculate(
       typeMap.forEach((typeRows, typeName) => {
         const collectors: CollectorData[] = [];
 
-        const collectorMap = new Map<string, number>();
+        const collectorMap = new Map<string, { payment: number; employeeType: string }>();
         typeRows.forEach((row) => {
           const collector = row.collector || "Unknown";
-          const current = collectorMap.get(collector) || 0;
-          collectorMap.set(collector, current + row.payment);
+          const current = collectorMap.get(collector);
+          if (current) {
+            current.payment += row.payment;
+          } else {
+            collectorMap.set(collector, { 
+              payment: row.payment, 
+              employeeType: row.employeeType || "collector" 
+            });
+          }
         });
 
-        collectorMap.forEach((payment, collectorName) => {
-          const rate = getCollectorRate(company, typeName, collectorName, employeeRoles);
-          const commission = (payment * rate) / 100;
+        collectorMap.forEach((data, collectorName) => {
+          const employeeRole = employeeRoles[collectorName];
+          
+          let employeeType = data.employeeType;
+          if (employeeRole?.role === "Telesales") {
+            employeeType = "Tele";
+          } else if (employeeRole?.role === "Production") {
+            employeeType = "production";
+          } else if (employeeRole?.role === "Collector") {
+            employeeType = "collector";
+          }
+          
+          let rate: number;
+          if (employeeRole?.customRate !== undefined && employeeRole.customRate > 0) {
+            rate = employeeRole.customRate;
+          } else {
+            rate = getCommissionRateFromJson(company, typeName, employeeType, targetStatus);
+          }
+          
+          const commission = (data.payment * rate) / 100;
 
           collectors.push({
             collector: collectorName,
-            totalPayment: payment,
+            totalPayment: data.payment,
             rate,
             commission,
           });
@@ -79,8 +105,8 @@ export function groupAndCalculate(
         const totalPayment = collectors.reduce((sum, c) => sum + c.totalPayment, 0);
         const collectorsCommission = collectors.reduce((sum, c) => sum + c.commission, 0);
         
-        const svResult = calculateSVCommission(company, typeName, totalPayment, "No Target");
-        const headResult = calculateHeadCommission(company, typeName, totalPayment, "No Target");
+        const svResult = calculateSVCommission(company, typeName, totalPayment, targetStatus);
+        const headResult = calculateHeadCommission(company, typeName, totalPayment, targetStatus);
         
         const totalCommission = collectorsCommission;
 

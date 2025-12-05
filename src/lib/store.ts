@@ -9,6 +9,7 @@ import type {
   Company,
   EmployeeRolesMapping,
   EmployeeRole,
+  TargetStatus,
 } from "./types";
 
 interface AppState {
@@ -17,6 +18,7 @@ interface AppState {
   columnMapping: ColumnMapping | null;
   processedData: ProcessedData | null;
   selectedCompany: Company;
+  selectedTargetStatus: TargetStatus;
   isProcessing: boolean;
   error: string | null;
   
@@ -25,6 +27,7 @@ interface AppState {
   setColumnMapping: (mapping: ColumnMapping | null) => void;
   setProcessedData: (data: ProcessedData | null) => void;
   setSelectedCompany: (company: Company) => void;
+  setSelectedTargetStatus: (status: TargetStatus) => void;
   setIsProcessing: (isProcessing: boolean) => void;
   setError: (error: string | null) => void;
   reset: () => void;
@@ -43,6 +46,7 @@ export const useAppStore = create<AppState>()((set) => ({
   columnMapping: null,
   processedData: null,
   selectedCompany: "Waseela",
+  selectedTargetStatus: "No Target",
   isProcessing: false,
   error: null,
 
@@ -51,6 +55,7 @@ export const useAppStore = create<AppState>()((set) => ({
   setColumnMapping: (columnMapping) => set({ columnMapping }),
   setProcessedData: (processedData) => set({ processedData }),
   setSelectedCompany: (selectedCompany) => set({ selectedCompany }),
+  setSelectedTargetStatus: (selectedTargetStatus) => set({ selectedTargetStatus }),
   setIsProcessing: (isProcessing) => set({ isProcessing }),
   setError: (error) => set({ error }),
   reset: () =>
@@ -60,6 +65,7 @@ export const useAppStore = create<AppState>()((set) => ({
       columnMapping: null,
       processedData: null,
       selectedCompany: "Waseela",
+      selectedTargetStatus: "No Target",
       isProcessing: false,
       error: null,
     }),

@@ -9,7 +9,7 @@ import ExportButtons from "@/components/ExportButtons";
 import { useAppStore, useRolesStore } from "@/lib/store";
 import { parseExcelFile, normalizeData, getUniqueCollectors } from "@/lib/parseExcel";
 import { groupAndCalculate } from "@/lib/grouping";
-import type { ColumnMapping as ColumnMappingType, Company } from "@/lib/types";
+import type { ColumnMapping as ColumnMappingType, Company, TargetStatus } from "@/lib/types";
 
 export default function UploadPage() {
   const {
@@ -18,6 +18,7 @@ export default function UploadPage() {
     columnMapping,
     processedData,
     selectedCompany,
+    selectedTargetStatus,
     isProcessing,
     error,
     setColumns,
@@ -25,6 +26,7 @@ export default function UploadPage() {
     setColumnMapping,
     setProcessedData,
     setSelectedCompany,
+    setSelectedTargetStatus,
     setIsProcessing,
     setError,
     reset,
@@ -60,7 +62,7 @@ export default function UploadPage() {
 
       try {
         const normalized = normalizeData(rawData, mapping);
-        const result = groupAndCalculate(normalized, selectedCompany, employeeRoles);
+        const result = groupAndCalculate(normalized, selectedCompany, employeeRoles, selectedTargetStatus);
         setProcessedData(result);
         setStep("results");
       } catch (err) {
@@ -69,7 +71,7 @@ export default function UploadPage() {
         setIsProcessing(false);
       }
     },
-    [rawData, selectedCompany, employeeRoles, setColumnMapping, setProcessedData, setIsProcessing, setError]
+    [rawData, selectedCompany, employeeRoles, selectedTargetStatus, setColumnMapping, setProcessedData, setIsProcessing, setError]
   );
 
   const handleCompanyChange = useCallback(
@@ -79,14 +81,31 @@ export default function UploadPage() {
       if (columnMapping && rawData.length > 0) {
         try {
           const normalized = normalizeData(rawData, columnMapping);
-          const result = groupAndCalculate(normalized, company, employeeRoles);
+          const result = groupAndCalculate(normalized, company, employeeRoles, selectedTargetStatus);
           setProcessedData(result);
         } catch (err) {
           setError((err as Error).message);
         }
       }
     },
-    [columnMapping, rawData, employeeRoles, setSelectedCompany, setProcessedData, setError]
+    [columnMapping, rawData, employeeRoles, selectedTargetStatus, setSelectedCompany, setProcessedData, setError]
+  );
+
+  const handleTargetStatusChange = useCallback(
+    (status: TargetStatus) => {
+      setSelectedTargetStatus(status);
+      
+      if (columnMapping && rawData.length > 0) {
+        try {
+          const normalized = normalizeData(rawData, columnMapping);
+          const result = groupAndCalculate(normalized, selectedCompany, employeeRoles, status);
+          setProcessedData(result);
+        } catch (err) {
+          setError((err as Error).message);
+        }
+      }
+    },
+    [columnMapping, rawData, employeeRoles, selectedCompany, setSelectedTargetStatus, setProcessedData, setError]
   );
 
   const handleReset = useCallback(() => {
@@ -98,7 +117,7 @@ export default function UploadPage() {
     if (columnMapping && rawData.length > 0 && step === "results") {
       try {
         const normalized = normalizeData(rawData, columnMapping);
-        const result = groupAndCalculate(normalized, selectedCompany, employeeRoles);
+        const result = groupAndCalculate(normalized, selectedCompany, employeeRoles, selectedTargetStatus);
         setProcessedData(result);
       } catch (err) {
         setError((err as Error).message);
@@ -188,11 +207,28 @@ export default function UploadPage() {
                 initialMapping={columnMapping}
               />
             </div>
-            <div>
+            <div className="space-y-4">
               <CompanySelector
                 selectedCompany={selectedCompany}
                 onCompanyChange={handleCompanyChange}
               />
+              <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4">
+                <label className="block text-sm font-bold text-slate-700 mb-2">
+                  Target Status
+                </label>
+                <p className="text-xs text-slate-500 mb-3">
+                  Select commission rate type
+                </p>
+                <select
+                  value={selectedTargetStatus}
+                  onChange={(e) => handleTargetStatusChange(e.target.value as TargetStatus)}
+                  className="w-full px-4 py-2.5 border-2 border-amber-400 bg-amber-50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-slate-800 font-medium"
+                >
+                  <option value="No Target">No Target</option>
+                  <option value="Target">Target</option>
+                  <option value="Over Target">Over Target</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -244,11 +280,27 @@ export default function UploadPage() {
             </div>
           </div>
 
-          <div className="flex gap-4 items-center justify-between">
-            <CompanySelector
-              selectedCompany={selectedCompany}
-              onCompanyChange={handleCompanyChange}
-            />
+          <div className="flex flex-wrap gap-4 items-center justify-between">
+            <div className="flex flex-wrap gap-4 items-center">
+              <CompanySelector
+                selectedCompany={selectedCompany}
+                onCompanyChange={handleCompanyChange}
+              />
+              <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-3">
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Target Status
+                </label>
+                <select
+                  value={selectedTargetStatus}
+                  onChange={(e) => handleTargetStatusChange(e.target.value as TargetStatus)}
+                  className="px-3 py-1.5 border-2 border-amber-400 bg-amber-50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-slate-800 font-medium text-sm"
+                >
+                  <option value="No Target">No Target</option>
+                  <option value="Target">Target</option>
+                  <option value="Over Target">Over Target</option>
+                </select>
+              </div>
+            </div>
             <ExportButtons data={processedData} company={selectedCompany} />
           </div>
 
