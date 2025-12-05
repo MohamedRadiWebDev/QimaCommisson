@@ -188,28 +188,31 @@ export default function Dashboard({ data, company }: DashboardProps) {
       {data.grandTotalAllCommissions !== undefined && (
         <div className="bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl shadow-lg p-6 border-2 border-amber-300 slide-up" style={{ opacity: 0, animationDelay: "0.5s", animationFillMode: "forwards" }}>
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-lg text-white/90 mb-2 font-semibold">Grand Total Commission</p>
-              <p className="text-4xl font-bold text-white mb-3">
+            <div className="flex-1">
+              <p className="text-lg text-white/90 mb-2 font-semibold">Grand Total Commission (إجمالي العمولات الكلي)</p>
+              <p className="text-5xl font-bold text-white mb-4">
                 {formatCurrency(data.grandTotalAllCommissions)}
               </p>
-              <div className="grid grid-cols-3 gap-4 text-sm">
-                <div className="bg-white/20 rounded-lg p-2 backdrop-blur-sm">
-                  <p className="text-white/80 text-xs mb-1">Collectors</p>
-                  <p className="text-white font-bold">{formatCurrency(data.grandTotalCommission)}</p>
+              <div className="grid grid-cols-3 gap-3 text-sm">
+                <div className="bg-white/25 rounded-lg p-3 backdrop-blur-sm border border-white/30">
+                  <p className="text-white/90 text-xs mb-1 font-medium">Collectors + Tele + Production</p>
+                  <p className="text-white font-bold text-lg">{formatCurrency(data.grandTotalCommission)}</p>
                 </div>
-                <div className="bg-white/20 rounded-lg p-2 backdrop-blur-sm">
-                  <p className="text-white/80 text-xs mb-1">S.V</p>
-                  <p className="text-white font-bold">{formatCurrency(data.grandTotalSVCommission || 0)}</p>
+                <div className="bg-white/25 rounded-lg p-3 backdrop-blur-sm border border-white/30">
+                  <p className="text-white/90 text-xs mb-1 font-medium">S.V</p>
+                  <p className="text-white font-bold text-lg">{formatCurrency(data.grandTotalSVCommission || 0)}</p>
                 </div>
-                <div className="bg-white/20 rounded-lg p-2 backdrop-blur-sm">
-                  <p className="text-white/80 text-xs mb-1">Head</p>
-                  <p className="text-white font-bold">{formatCurrency(data.grandTotalHeadCommission || 0)}</p>
+                <div className="bg-white/25 rounded-lg p-3 backdrop-blur-sm border border-white/30">
+                  <p className="text-white/90 text-xs mb-1 font-medium">Head</p>
+                  <p className="text-white font-bold text-lg">{formatCurrency(data.grandTotalHeadCommission || 0)}</p>
                 </div>
               </div>
+              <div className="mt-3 text-xs text-white/80 bg-white/10 rounded px-3 py-2 backdrop-blur-sm">
+                💡 هذا المجموع يشمل عمولات جميع الموظفين: Collectors, Telesales, Production, S.V, و Head
+              </div>
             </div>
-            <div className="bg-white/25 p-4 rounded-xl backdrop-blur-sm">
-              <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-white/30 p-4 rounded-xl backdrop-blur-sm ml-4">
+              <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
