@@ -1,5 +1,7 @@
 import type { Company, EmployeeRolesMapping } from "./types";
-import companyRatesData from "./companyRates.json";
+import { loadCompanyRates } from "./companyRatesLoader";
+
+const companyRatesData = loadCompanyRates();
 
 function parsePercentage(value: string | undefined): number {
   if (!value || value === "") return 0;
