@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { formatCurrency, formatPercent } from "@/lib/utils";
 import type { ProcessedData, Company } from "@/lib/types";
 
@@ -34,11 +35,11 @@ export default function DataTable({ data }: DataTableProps) {
           </thead>
           <tbody>
             {data.headGroups.map((headGroup, headIdx) => (
-              <>
+              <React.Fragment key={`head-${headIdx}`}>
                 {headGroup.svGroups.map((svGroup, svIdx) => (
-                  <>
+                  <React.Fragment key={`sv-${headIdx}-${svIdx}`}>
                     {svGroup.types.map((typeGroup, typeIdx) => (
-                      <>
+                      <React.Fragment key={`type-${headIdx}-${svIdx}-${typeIdx}`}>
                         {typeGroup.collectors.map((collector, collectorIdx) => (
                           <tr
                             key={`${headIdx}-${svIdx}-${typeIdx}-${collectorIdx}`}
@@ -84,7 +85,7 @@ export default function DataTable({ data }: DataTableProps) {
                             {formatCurrency(typeGroup.totalCommission)}
                           </td>
                         </tr>
-                      </>
+                      </React.Fragment>
                     ))}
 
                     {/* S.V Total Row */}
@@ -103,7 +104,7 @@ export default function DataTable({ data }: DataTableProps) {
                         {formatCurrency(svGroup.totalCommission)}
                       </td>
                     </tr>
-                  </>
+                  </React.Fragment>
                 ))}
 
                 {/* Head Total Row */}
@@ -131,7 +132,7 @@ export default function DataTable({ data }: DataTableProps) {
                     <td colSpan={7} className="px-4 py-1"></td>
                   </tr>
                 )}
-              </>
+              </React.Fragment>
             ))}
 
             {/* Grand Total Row */}
