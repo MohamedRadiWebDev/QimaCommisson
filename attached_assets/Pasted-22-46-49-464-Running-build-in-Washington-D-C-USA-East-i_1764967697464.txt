@@ -1,0 +1,44 @@
+22:46:49.464 Running build in Washington, D.C., USA (East) – iad1
+22:46:49.465 Build machine configuration: 2 cores, 8 GB
+22:46:49.585 Cloning github.com/MohamedRadiWebDev/QimaCommisson (Branch: main, Commit: 89aa98b)
+22:46:49.585 Previous build caches not available.
+22:46:49.793 Cloning completed: 208.000ms
+22:46:50.139 Running "vercel build"
+22:46:50.588 Vercel CLI 49.0.0
+22:46:50.902 Installing dependencies...
+22:47:04.851 
+22:47:04.852 added 423 packages in 14s
+22:47:04.852 
+22:47:04.852 145 packages are looking for funding
+22:47:04.852   run `npm fund` for details
+22:47:04.915 Detected Next.js version: 15.5.7
+22:47:04.920 Running "npm run build"
+22:47:05.027 
+22:47:05.028 > commission-calculator@0.1.0 build
+22:47:05.028 > next build
+22:47:05.028 
+22:47:05.771 Attention: Next.js now collects completely anonymous telemetry regarding usage.
+22:47:05.772 This information is used to shape Next.js' roadmap and prioritize features.
+22:47:05.772 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+22:47:05.773 https://nextjs.org/telemetry
+22:47:05.773 
+22:47:05.851    ▲ Next.js 15.5.7
+22:47:05.852 
+22:47:05.882    Creating an optimized production build ...
+22:47:24.884  ✓ Compiled successfully in 16.6s
+22:47:24.887    Linting and checking validity of types ...
+22:47:29.287 Failed to compile.
+22:47:29.288 
+22:47:29.291 ./src/app/upload/page.tsx:236:17
+22:47:29.291 Type error: Type '{ selectedCompany: string; onChange: (company: string) => void; companies: string[]; }' is not assignable to type 'IntrinsicAttributes & CompanySelectorProps'.
+22:47:29.291   Property 'companies' does not exist on type 'IntrinsicAttributes & CompanySelectorProps'.
+22:47:29.291 
+22:47:29.291 [0m [90m 234 |[39m                 selectedCompany[33m=[39m{selectedCompany}
+22:47:29.292  [90m 235 |[39m                 onChange[33m=[39m{handleCompanyChange}
+22:47:29.292 [31m[1m>[22m[39m[90m 236 |[39m                 companies[33m=[39m{[[32m"Waseela"[39m[33m,[39m [32m"Ghazala"[39m[33m,[39m [32m"Marsa"[39m]}
+22:47:29.292  [90m     |[39m                 [31m[1m^[22m[39m
+22:47:29.292  [90m 237 |[39m               [33m/[39m[33m>[39m
+22:47:29.292  [90m 238 |[39m               [33m<[39m[33mdiv[39m className[33m=[39m[32m"bg-white rounded-xl shadow-lg border border-slate-200 p-4"[39m[33m>[39m
+22:47:29.293  [90m 239 |[39m                 [33m<[39m[33mlabel[39m className[33m=[39m[32m"block text-sm font-bold text-slate-700 mb-2"[39m[33m>[39m[0m
+22:47:29.433 Next.js build worker exited with code: 1 and signal: null
+22:47:29.455 Error: Command "npm run build" exited with 1
