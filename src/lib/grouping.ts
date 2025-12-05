@@ -51,6 +51,7 @@ export function groupAndCalculate(
 
   const employees = useEmployeeStore.getState().employees;
   const employeeTypeMap = new Map(employees.map(emp => [emp.name, emp.type]));
+  const employeeSubTypeMap = new Map(employees.map(emp => [emp.name, emp.productionSubType]));
 
   const headGroups: HeadGroup[] = [];
   let grandTotalPayment = 0;
@@ -72,7 +73,17 @@ export function groupAndCalculate(
         let typeTotalCommission = 0;
 
         collectorMap.forEach((payment, collectorName) => {
-          const employeeType = employeeTypeMap.get(collectorName) || "collector";
+          let employeeType = employeeTypeMap.get(collectorName) || "collector";
+          
+          if (employeeType === "production") {
+            const productionSubType = employeeSubTypeMap.get(collectorName);
+            if (productionSubType === "tele") {
+              employeeType = "tele";
+            } else {
+              employeeType = "collector";
+            }
+          }
+          
           const rate = getCommissionRateFromJson(company, typeName, employeeType, targetStatus);
           const commission = (payment * rate) / 100;
 

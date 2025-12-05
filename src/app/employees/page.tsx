@@ -9,6 +9,7 @@ import Link from "next/link";
 import * as XLSX from "xlsx";
 
 const EMPLOYEE_TYPES = ["collector", "tele", "production", "S.V", "Head"] as const;
+const PRODUCTION_SUB_TYPES = ["collector", "tele"] as const;
 
 export default function EmployeesPage() {
   const { employees, addEmployee, updateEmployee, deleteEmployee, loadEmployees } = useEmployeeStore();
@@ -16,8 +17,10 @@ export default function EmployeesPage() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [newEmployeeName, setNewEmployeeName] = useState("");
   const [newEmployeeType, setNewEmployeeType] = useState<Employee["type"]>("collector");
+  const [newProductionSubType, setNewProductionSubType] = useState<"collector" | "tele">("collector");
   const [editingEmployee, setEditingEmployee] = useState<string | null>(null);
   const [tempType, setTempType] = useState<Employee["type"]>("collector");
+  const [tempProductionSubType, setTempProductionSubType] = useState<"collector" | "tele">("collector");
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
@@ -40,20 +43,23 @@ export default function EmployeesPage() {
     addEmployee({
       name: newEmployeeName.trim(),
       type: newEmployeeType,
+      productionSubType: newEmployeeType === "production" ? newProductionSubType : undefined,
     });
 
     setNewEmployeeName("");
     setNewEmployeeType("collector");
+    setNewProductionSubType("collector");
     setShowAddForm(false);
   };
 
   const startEditing = (employee: Employee) => {
     setEditingEmployee(employee.name);
     setTempType(employee.type);
+    setTempProductionSubType(employee.productionSubType || "collector");
   };
 
   const saveEdit = (name: string) => {
-    updateEmployee(name, tempType);
+    updateEmployee(name, tempType, tempType === "production" ? tempProductionSubType : undefined);
     setEditingEmployee(null);
   };
 
@@ -288,6 +294,16 @@ export default function EmployeesPage() {
                     </option>
                   ))}
                 </select>
+                {newEmployeeType === "production" && (
+                  <select
+                    value={newProductionSubType}
+                    onChange={(e) => setNewProductionSubType(e.target.value as "collector" | "tele")}
+                    className="px-4 py-2 border-2 border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-800 bg-amber-50"
+                  >
+                    <option value="collector">Collector Rate</option>
+                    <option value="tele">Tele Rate</option>
+                  </select>
+                )}
                 <button
                   onClick={handleAddEmployee}
                   className="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 font-bold"
@@ -335,36 +351,55 @@ export default function EmployeesPage() {
                         {employee.name}
                       </td>
                       <td className="px-4 py-3">
-                        <div className="flex justify-center">
+                        <div className="flex justify-center gap-2 flex-wrap">
                           {isEditing ? (
-                            <select
-                              value={tempType}
-                              onChange={(e) => setTempType(e.target.value as Employee["type"])}
-                              className="px-4 py-2 border-2 border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 text-slate-800"
-                            >
-                              {EMPLOYEE_TYPES.map((type) => (
-                                <option key={type} value={type}>
-                                  {type}
-                                </option>
-                              ))}
-                            </select>
-                          ) : (
-                            <span
-                              className={cn(
-                                "px-4 py-1.5 rounded-lg font-semibold",
-                                employee.type === "collector"
-                                  ? "bg-emerald-100 text-emerald-800 border-2 border-emerald-300"
-                                  : employee.type === "tele"
-                                  ? "bg-violet-100 text-violet-800 border-2 border-violet-300"
-                                  : employee.type === "production"
-                                  ? "bg-amber-100 text-amber-800 border-2 border-amber-300"
-                                  : employee.type === "S.V"
-                                  ? "bg-blue-100 text-blue-800 border-2 border-blue-300"
-                                  : "bg-indigo-100 text-indigo-800 border-2 border-indigo-300"
+                            <>
+                              <select
+                                value={tempType}
+                                onChange={(e) => setTempType(e.target.value as Employee["type"])}
+                                className="px-4 py-2 border-2 border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 text-slate-800"
+                              >
+                                {EMPLOYEE_TYPES.map((type) => (
+                                  <option key={type} value={type}>
+                                    {type}
+                                  </option>
+                                ))}
+                              </select>
+                              {tempType === "production" && (
+                                <select
+                                  value={tempProductionSubType}
+                                  onChange={(e) => setTempProductionSubType(e.target.value as "collector" | "tele")}
+                                  className="px-4 py-2 border-2 border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-800 bg-amber-50"
+                                >
+                                  <option value="collector">Collector Rate</option>
+                                  <option value="tele">Tele Rate</option>
+                                </select>
                               )}
-                            >
-                              {employee.type}
-                            </span>
+                            </>
+                          ) : (
+                            <div className="flex flex-col items-center gap-1">
+                              <span
+                                className={cn(
+                                  "px-4 py-1.5 rounded-lg font-semibold",
+                                  employee.type === "collector"
+                                    ? "bg-emerald-100 text-emerald-800 border-2 border-emerald-300"
+                                    : employee.type === "tele"
+                                    ? "bg-violet-100 text-violet-800 border-2 border-violet-300"
+                                    : employee.type === "production"
+                                    ? "bg-amber-100 text-amber-800 border-2 border-amber-300"
+                                    : employee.type === "S.V"
+                                    ? "bg-blue-100 text-blue-800 border-2 border-blue-300"
+                                    : "bg-indigo-100 text-indigo-800 border-2 border-indigo-300"
+                                )}
+                              >
+                                {employee.type}
+                              </span>
+                              {employee.type === "production" && employee.productionSubType && (
+                                <span className="text-xs text-amber-600 font-medium">
+                                  ({employee.productionSubType === "tele" ? "Tele Rate" : "Collector Rate"})
+                                </span>
+                              )}
+                            </div>
                           )}
                         </div>
                       </td>

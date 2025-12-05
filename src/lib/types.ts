@@ -96,10 +96,12 @@ export type Company = string;
 export type TargetStatus = "No Target" | "Target" | "Over Target";
 
 export type EmployeeRole = "collector" | "tele" | "production" | "S.V" | "Head";
+export type ProductionSubType = "collector" | "tele";
 
 export interface Employee {
   name: string;
   type: EmployeeRole;
+  productionSubType?: ProductionSubType;
   customRate?: number;
   role?: "Collector" | "Telesales" | "Production";
 }
