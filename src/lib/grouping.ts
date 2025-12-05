@@ -1,23 +1,24 @@
-
-import type { 
-  RawDataRow, 
-  ProcessedData, 
-  Company, 
+import type {
+  RawDataRow,
+  ProcessedData,
+  Company,
   TargetStatus,
   HeadGroup,
   SVGroup,
   TypeGroup,
   CollectorGroup,
   SVHeadSummary,
-  SVHeadSummaryRow
+  SVHeadSummaryRow,
+  EmployeeRolesMapping,
+  NormalizedRow
 } from "./types";
 import { useEmployeeStore } from "./employeeStore";
 import { getCommissionRateFromJson } from "./calculator";
 
 export function groupAndCalculate(
-  data: RawDataRow[],
+  data: NormalizedRow[],
   company: Company,
-  employeeRoles: Record<string, string>,
+  employeeRoles: EmployeeRolesMapping,
   targetStatus: TargetStatus = "No Target"
 ): ProcessedData {
   const headMap = new Map<string, Map<string, Map<string, Map<string, number>>>>();
@@ -71,8 +72,8 @@ export function groupAndCalculate(
         let typeTotalCommission = 0;
 
         collectorMap.forEach((payment, collectorName) => {
-          const employeeType = employeeTypeMap.get(collectorName) || "collector";
-          const rate = getCommissionRateFromJson(company, typeName, employeeType, targetStatus);
+          const collectorRole = employeeRoles[collectorName]?.type || "collector";
+          const rate = getCommissionRateFromJson(company, typeName, collectorRole, targetStatus);
           const commission = (payment * rate) / 100;
 
           collectors.push({
@@ -213,7 +214,7 @@ export interface SVHeadDetailedSummary {
 export function generateSVHeadDetailedSummary(data: ProcessedData, company: Company): SVHeadDetailedSummary {
   const svMap = new Map<string, { payment: number; commission: number; typeBreakdown: Map<string, { payment: number; rate: number; commission: number }> }>();
   const headMap = new Map<string, { payment: number; commission: number; typeBreakdown: Map<string, { payment: number; rate: number; commission: number }> }>();
-  
+
   let totalPayment = 0;
 
   data.headGroups.forEach((headGroup) => {
@@ -225,7 +226,7 @@ export function generateSVHeadDetailedSummary(data: ProcessedData, company: Comp
       svGroup.types.forEach((typeGroup) => {
         const svRate = getCommissionRateFromJson(company, typeGroup.type, "S.V", "No Target");
         const svCommission = (typeGroup.totalPayment * svRate) / 100;
-        
+
         svTotalPayment += typeGroup.totalPayment;
         svTotalCommission += svCommission;
 
@@ -238,7 +239,7 @@ export function generateSVHeadDetailedSummary(data: ProcessedData, company: Comp
       });
 
       const currentSV = svMap.get(svGroup.sv) || { payment: 0, commission: 0, typeBreakdown: new Map() };
-      
+
       svTypeBreakdown.forEach((typeData, typeName) => {
         const existingType = currentSV.typeBreakdown.get(typeName) || { payment: 0, rate: typeData.rate, commission: 0 };
         currentSV.typeBreakdown.set(typeName, {
@@ -263,7 +264,7 @@ export function generateSVHeadDetailedSummary(data: ProcessedData, company: Comp
       svGroup.types.forEach((typeGroup) => {
         const headRate = getCommissionRateFromJson(company, typeGroup.type, "Head", "No Target");
         const headCommission = (typeGroup.totalPayment * headRate) / 100;
-        
+
         headTotalPayment += typeGroup.totalPayment;
         headTotalCommission += headCommission;
 
@@ -277,7 +278,7 @@ export function generateSVHeadDetailedSummary(data: ProcessedData, company: Comp
     });
 
     const currentHead = headMap.get(headGroup.head) || { payment: 0, commission: 0, typeBreakdown: new Map() };
-    
+
     headTypeBreakdown.forEach((typeData, typeName) => {
       const existingType = currentHead.typeBreakdown.get(typeName) || { payment: 0, rate: typeData.rate, commission: 0 };
       currentHead.typeBreakdown.set(typeName, {
@@ -292,7 +293,7 @@ export function generateSVHeadDetailedSummary(data: ProcessedData, company: Comp
       commission: currentHead.commission + headTotalCommission,
       typeBreakdown: currentHead.typeBreakdown
     });
-    
+
     totalPayment += headTotalPayment;
   });
 
