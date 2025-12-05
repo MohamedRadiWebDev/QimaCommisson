@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState } from "react";
 import FileUploader from "@/components/FileUploader";
 import ColumnMapping from "@/components/ColumnMapping";
-import CompanySelector from "@/components/CompanySelector";
 import DataTable from "@/components/DataTable";
 import ExportButtons from "@/components/ExportButtons";
 import { useAppStore, useRolesStore } from "@/lib/store";
@@ -282,10 +281,6 @@ export default function UploadPage() {
 
           <div className="flex flex-wrap gap-4 items-center justify-between">
             <div className="flex flex-wrap gap-4 items-center">
-              <CompanySelector
-                selectedCompany={selectedCompany}
-                onCompanyChange={handleCompanyChange}
-              />
               <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-3">
                 <label className="block text-xs font-bold text-slate-700 mb-1">
                   Target Status

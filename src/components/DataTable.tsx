@@ -117,7 +117,7 @@ export default function DataTable({ data, company }: DataTableProps) {
 
                   <tr className="bg-gradient-to-r from-purple-100 to-purple-200 border-y-2 border-purple-300">
                     <td className="px-4 py-3 text-sm font-bold text-purple-800">
-                      مجموع النادي {headGroup.head}
+                      مجموع {headGroup.head}
                     </td>
                     <td className="px-4 py-3"></td>
                     <td className="px-4 py-3"></td>

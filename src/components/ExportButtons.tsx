@@ -72,7 +72,7 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
         });
         
         mainData.push([
-          `مجموع النادي ${headGroup.head}`,
+          `مجموع ${headGroup.head}`,
           "",
           "",
           "",
@@ -261,7 +261,7 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
         });
         
         mainTableData.push([
-          { content: `مجموع النادي ${headGroup.head}`, styles: { fontStyle: "bold", fillColor: [226, 232, 240] } },
+          { content: `مجموع ${headGroup.head}`, styles: { fontStyle: "bold", fillColor: [226, 232, 240] } },
           "",
           "",
           "",
