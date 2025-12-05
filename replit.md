@@ -50,29 +50,30 @@ src/
 - **State Management**: Zustand 5 with localStorage persistence
 - **Excel Parsing**: SheetJS (xlsx)
 
-## Commission Rules (Waseela)
+## Commission Rules
 
-### Active Type
-- Default Rate: 1.00%
-- Specific Collectors:
-  - كريمه هانى: 1.50%
-  - Others: 1.00%
-- Type Total Rate: 0.50%
+Commission rates are now dynamically loaded from `src/lib/companyRates.json`. The system supports multiple companies with different rate structures:
 
-### W.O Type
-- Default Rate: 1.50%
-- Specific Collectors:
-  - كريمه هانى: 2.00%
-  - Others: 1.50%
-- Type Total Rate: 0.75%
+- **Raya, Waseela, Souhoola**: Unified structure with Active/W.O types and No Target/Target/Over Target levels
+- **VALU, Tanmeyah**: Split structure with Active_Segments and wO_Segments
+- **بنك الإسكندرية, بنك كريدي أجريكول**: Percentage-based ranges (0%-100%, 101%-125%, etc.)
+- **Money_Fellows**: Complex structure with Active_Segments and CL_Segments
+- **Seven**: Product-based with Ticket_Size_Segments and Revolving_Segments
 
-## Employee Roles
+### Employee Types
+- **Collector**: Field collectors with higher rates
+- **Tele/Telesales**: Phone-based with moderate rates
+- **Production**: Fixed rates regardless of target
+- **S.V (Supervisor)**: Lower percentage rates on team totals
+- **Head**: Lowest percentage rates on department totals
 
-- **Collector**: Uses company default rates
-- **Telesales**: Commission set to 0% (unless custom rate specified)
-- **Production**: Commission set to 0% (unless custom rate specified)
+## S.V and Head Summary Table
 
-Custom rates override all company defaults.
+A dedicated summary table displays below the main results showing:
+- Type (Active/W.O)
+- Total Payment per type
+- S.V Rate and Commission
+- Head Rate and Commission
 
 ## Running the Application
 
@@ -85,6 +86,8 @@ The application runs on port 5000.
 
 ## Recent Changes
 
+- December 2025: Updated commission calculation to read rates from companyRates.json
+- December 2025: Added S.V and Head summary table below main results
 - Initial project setup with Next.js 15, TypeScript, and TailwindCSS
 - Implemented complete commission calculation system
 - Added dynamic column mapping with auto-detection
