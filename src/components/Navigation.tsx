@@ -24,7 +24,7 @@ export default function Navigation() {
               </svg>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold text-white">حساب العمولات بدون عناء المحاسبين</span>
+              <span className="text-xl font-bold text-white">إدارة طحن العمولات</span>
               <span className="text-xs text-slate-300">كل اللي عليك ترفّع… وإحنا نرتّب</span>
             </div>
           </Link>
