@@ -82,9 +82,7 @@ export default function DataTable({ data, company }: DataTableProps) {
                               {formatCurrency(typeGroup.totalPayment)}
                             </td>
                             <td className="px-4 py-2"></td>
-                            <td className="px-4 py-2 text-sm font-bold text-blue-600">
-                              {formatCurrency(typeGroup.totalCommission)}
-                            </td>
+                            <td className="px-4 py-2"></td>
                           </tr>
                         </React.Fragment>
                       ))}
@@ -100,9 +98,7 @@ export default function DataTable({ data, company }: DataTableProps) {
                           {formatCurrency(svGroup.totalPayment)}
                         </td>
                         <td className="px-4 py-2"></td>
-                        <td className="px-4 py-2 text-sm font-bold text-indigo-600">
-                          {formatCurrency(svGroup.totalCommission)}
-                        </td>
+                        <td className="px-4 py-2"></td>
                       </tr>
                     </React.Fragment>
                   ))}
@@ -117,12 +113,8 @@ export default function DataTable({ data, company }: DataTableProps) {
                     <td className="px-4 py-3 text-sm font-bold text-purple-800">
                       {formatCurrency(headGroup.totalPayment)}
                     </td>
-                    <td className="px-4 py-3 text-sm font-bold text-purple-800">
-                      {headGroup.totalPayment > 0 ? formatPercent((headGroup.totalCommission / headGroup.totalPayment) * 100) : "0%"}
-                    </td>
-                    <td className="px-4 py-3 text-sm font-bold text-purple-600">
-                      {formatCurrency(headGroup.totalCommission)}
-                    </td>
+                    <td className="px-4 py-3"></td>
+                    <td className="px-4 py-3"></td>
                   </tr>
 
                   {headIdx < data.headGroups.length - 1 && (
@@ -140,12 +132,8 @@ export default function DataTable({ data, company }: DataTableProps) {
                 <td className="px-4 py-4 text-base font-bold text-emerald-900">
                   {formatCurrency(data.grandTotalPayment)}
                 </td>
-                <td className="px-4 py-4 text-base font-bold text-emerald-900">
-                  {data.grandTotalPayment > 0 ? formatPercent((data.grandTotalCommission / data.grandTotalPayment) * 100) : "0%"}
-                </td>
-                <td className="px-4 py-4 text-base font-bold text-emerald-700">
-                  {formatCurrency(data.grandTotalCommission)}
-                </td>
+                <td className="px-4 py-4"></td>
+                <td className="px-4 py-4"></td>
               </tr>
             </tbody>
           </table>
@@ -161,31 +149,44 @@ export default function DataTable({ data, company }: DataTableProps) {
           <table className="w-full">
             <thead>
               <tr className="bg-slate-50 border-b-2 border-slate-200">
+                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Role</th>
                 <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Type</th>
                 <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Payment</th>
-                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">S.V Rate</th>
-                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">S.V Commission</th>
-                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Head Rate</th>
-                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Head Commission</th>
+                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Rate</th>
+                <th className="px-4 py-3 text-right text-sm font-bold text-slate-700">Commission</th>
               </tr>
             </thead>
             <tbody>
               {svHeadSummary.rows.map((row, idx) => (
-                <tr key={idx} className="border-b border-slate-100 hover:bg-slate-50">
-                  <td className="px-4 py-3 text-sm font-medium text-slate-800">{row.type}</td>
-                  <td className="px-4 py-3 text-sm text-slate-800">{formatCurrency(row.totalPayment)}</td>
-                  <td className="px-4 py-3 text-sm text-indigo-600">{formatPercent(row.svRate)}</td>
-                  <td className="px-4 py-3 text-sm font-semibold text-indigo-600">{formatCurrency(row.svCommission)}</td>
-                  <td className="px-4 py-3 text-sm text-purple-600">{formatPercent(row.headRate)}</td>
-                  <td className="px-4 py-3 text-sm font-semibold text-purple-600">{formatCurrency(row.headCommission)}</td>
-                </tr>
+                <React.Fragment key={idx}>
+                  <tr className="border-b border-slate-100 hover:bg-indigo-50">
+                    <td className="px-4 py-3 text-sm font-bold text-indigo-700">S.V</td>
+                    <td className="px-4 py-3 text-sm font-medium text-slate-800">{row.type}</td>
+                    <td className="px-4 py-3 text-sm text-slate-800">{formatCurrency(row.totalPayment)}</td>
+                    <td className="px-4 py-3 text-sm text-indigo-600">{formatPercent(row.svRate)}</td>
+                    <td className="px-4 py-3 text-sm font-semibold text-indigo-600">{formatCurrency(row.svCommission)}</td>
+                  </tr>
+                  <tr className="border-b border-slate-200 hover:bg-purple-50">
+                    <td className="px-4 py-3 text-sm font-bold text-purple-700">Head</td>
+                    <td className="px-4 py-3 text-sm font-medium text-slate-800">{row.type}</td>
+                    <td className="px-4 py-3 text-sm text-slate-800">{formatCurrency(row.totalPayment)}</td>
+                    <td className="px-4 py-3 text-sm text-purple-600">{formatPercent(row.headRate)}</td>
+                    <td className="px-4 py-3 text-sm font-semibold text-purple-600">{formatCurrency(row.headCommission)}</td>
+                  </tr>
+                </React.Fragment>
               ))}
 
-              <tr className="bg-orange-100 border-t-2 border-orange-400">
-                <td className="px-4 py-4 text-sm font-bold text-orange-900">المجموع الإجمالي</td>
-                <td className="px-4 py-4 text-sm font-bold text-orange-900">{formatCurrency(svHeadSummary.totalPayment)}</td>
+              <tr className="bg-indigo-100 border-t-2 border-indigo-400">
+                <td className="px-4 py-4 text-sm font-bold text-indigo-900">مجموع S.V</td>
+                <td className="px-4 py-4"></td>
+                <td className="px-4 py-4 text-sm font-bold text-indigo-900">{formatCurrency(svHeadSummary.totalPayment)}</td>
                 <td className="px-4 py-4"></td>
                 <td className="px-4 py-4 text-sm font-bold text-indigo-700">{formatCurrency(svHeadSummary.totalSVCommission)}</td>
+              </tr>
+              <tr className="bg-purple-100 border-b-2 border-purple-400">
+                <td className="px-4 py-4 text-sm font-bold text-purple-900">مجموع Head</td>
+                <td className="px-4 py-4"></td>
+                <td className="px-4 py-4 text-sm font-bold text-purple-900">{formatCurrency(svHeadSummary.totalPayment)}</td>
                 <td className="px-4 py-4"></td>
                 <td className="px-4 py-4 text-sm font-bold text-purple-700">{formatCurrency(svHeadSummary.totalHeadCommission)}</td>
               </tr>
