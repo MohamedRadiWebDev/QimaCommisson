@@ -45,22 +45,23 @@ export default function DomainTabs({ onSelectAll, onSelectDomain, isAllSelected 
         </button>
 
         {domains.map((domain) => (
-          <button
+          <div
             key={domain.id}
-            onClick={() => {
-              setActiveDomain(domain.id);
-              onSelectDomain(domain.id);
-            }}
-            className={`group px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 flex items-center gap-2 ${
+            className={`group px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 flex items-center gap-2 cursor-pointer ${
               activeDomainId === domain.id && !isAllSelected
                 ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md"
                 : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
             }`}
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
-            {domain.name}
+            <div onClick={() => {
+              setActiveDomain(domain.id);
+              onSelectDomain(domain.id);
+            }} className="flex items-center gap-2 flex-1">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+              {domain.name}
+            </div>
             <button
               onClick={(e) => handleRemoveDomain(e, domain.id)}
               className={`ml-1 p-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity ${
@@ -73,7 +74,7 @@ export default function DomainTabs({ onSelectAll, onSelectDomain, isAllSelected 
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-          </button>
+          </div>
         ))}
 
         {domains.length === 0 && (
