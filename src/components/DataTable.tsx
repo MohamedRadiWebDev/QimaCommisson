@@ -68,6 +68,25 @@ export default function DataTable({ data }: DataTableProps) {
                         ))}
 
                         {/* Type Total Row */}
+                        <tr className="bg-yellow-50 border-b border-yellow-200">
+                          <td className="px-4 py-2"></td>
+                          <td className="px-4 py-2"></td>
+                          <td className="px-4 py-2 text-sm font-bold text-yellow-800">
+                            {typeGroup.type} Total
+                          </td>
+                          <td className="px-4 py-2"></td>
+                          <td className="px-4 py-2 text-sm font-bold text-yellow-800">
+                            {formatCurrency(typeGroup.totalPayment)}
+                          </td>
+                          <td className="px-4 py-2 text-sm font-bold text-yellow-800">
+                            {formatPercent((typeGroup.typeTotalCommission / typeGroup.totalPayment) * 100)}
+                          </td>
+                          <td className="px-4 py-2 text-sm font-bold text-yellow-600">
+                            {formatCurrency(typeGroup.typeTotalCommission)}
+                          </td>
+                        </tr>
+                        
+                        {/* مجموع Type (Sum of all) */}
                         <tr className="bg-blue-50 border-b border-blue-200">
                           <td className="px-4 py-2"></td>
                           <td className="px-4 py-2"></td>
@@ -78,9 +97,7 @@ export default function DataTable({ data }: DataTableProps) {
                           <td className="px-4 py-2 text-sm font-bold text-blue-800">
                             {formatCurrency(typeGroup.totalPayment)}
                           </td>
-                          <td className="px-4 py-2 text-sm font-bold text-blue-800">
-                            {formatPercent(typeGroup.totalRate)}
-                          </td>
+                          <td className="px-4 py-2"></td>
                           <td className="px-4 py-2 text-sm font-bold text-blue-600">
                             {formatCurrency(typeGroup.totalCommission)}
                           </td>

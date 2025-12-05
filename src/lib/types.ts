@@ -46,6 +46,7 @@ export interface TypeGroup {
   totalPayment: number;
   totalRate: number;
   totalCommission: number;
+  typeTotalCommission: number;
 }
 
 export interface SVGroup {

@@ -70,3 +70,12 @@ export function getTypeTotalRate(company: Company, type: string): number {
 export function calculateCommission(payment: number, rate: number): number {
   return (payment * rate) / 100;
 }
+
+export function calculateTypeTotalCommission(
+  company: Company,
+  type: string,
+  totalPayment: number
+): number {
+  const rate = getTypeTotalRate(company, type);
+  return (totalPayment * rate) / 100;
+}

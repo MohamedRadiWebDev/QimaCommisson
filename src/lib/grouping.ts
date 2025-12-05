@@ -8,7 +8,7 @@ import type {
   TypeGroup,
   CollectorData,
 } from "./types";
-import { getCollectorRate } from "./calculator";
+import { getCollectorRate, calculateTypeTotalCommission } from "./calculator";
 
 export function groupAndCalculate(
   data: NormalizedRow[],
@@ -80,7 +80,13 @@ export function groupAndCalculate(
         collectors.sort((a, b) => a.collector.localeCompare(b.collector));
 
         const totalPayment = collectors.reduce((sum, c) => sum + c.totalPayment, 0);
-        const totalCommission = collectors.reduce((sum, c) => sum + c.commission, 0);
+        const collectorsCommission = collectors.reduce((sum, c) => sum + c.commission, 0);
+        
+        // Calculate the type total commission (additional commission on the total)
+        const typeTotalCommission = calculateTypeTotalCommission(company, typeName, totalPayment);
+        
+        // Total commission = individual collectors commission + type total commission
+        const totalCommission = collectorsCommission + typeTotalCommission;
 
         typeGroups.push({
           type: typeName,
@@ -88,6 +94,7 @@ export function groupAndCalculate(
           totalPayment,
           totalRate: collectors.length > 0 ? (totalCommission / totalPayment) * 100 : 0,
           totalCommission,
+          typeTotalCommission, // Store this separately for display
         });
       });
 
