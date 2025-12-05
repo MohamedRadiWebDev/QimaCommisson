@@ -1,0 +1,1286 @@
+{
+    "All_Companies_Collection_Rates": {
+        "Raya": {
+        "Description": "هيكل موحد (Active / w/O) مع نسب هدف وتحصيل عامة.",
+        "Data": [
+            {
+            "Employee_Type": "Tele",
+            "Type": "Active",
+            "No Target": "1.00%",
+            "Target": "1.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Tele",
+            "Type": "w/O",
+            "No Target": "1.25%",
+            "Target": "1.75%",
+            "Over Target": "3.00%"
+            },
+            {
+            "Employee_Type": "collector",
+            "Type": "Active",
+            "No Target": "1.50%",
+            "Target": "2.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Type": "w/O",
+            "No Target": "2.00%",
+            "Target": "3.00%",
+            "Over Target": "4.00%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Type": "collector",
+            "No Target": "2.00%",
+            "Target": "2.00%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Type": "Tele",
+            "No Target": "1.50%",
+            "Target": "1.50%",
+            "Over Target": "1.50%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "Type": "Active",
+            "No Target": "0.50%",
+            "Target": "0.75%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Type": "w/O",
+            "No Target": "0.75%",
+            "Target": "1.00%",
+            "Over Target": "1.50%"
+            },
+            {
+            "Employee_Type": "Head",
+            "Type": "Active",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Type": "w/O",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": "0.75%"
+            }
+        ]
+        },
+        "VALU": {
+        "Description": "مقسومة حسب Active (بفترات زمنية) و w/O (بمستويات أداء).",
+        "Active_Segments": [
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "Active 4-5-6",
+            "no": "1.00%",
+            "T": "1.75%"
+            },
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "b/1.2.3",
+            "no": "0.75%",
+            "T": "1.25%"
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "Active 4-5-6",
+            "no": "1.50%",
+            "T": "2.75%"
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "b/1.2.3",
+            "no": "1.25%",
+            "T": "2.00%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "collector",
+            "no": "2.00%",
+            "T": "2.00%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "Tele",
+            "no": "1.50%",
+            "T": "1.50%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "Active 4-5-6",
+            "no": "0.50%",
+            "T": "0.75%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "b/1.2.3",
+            "no": "0.25%",
+            "T": "0.50%"
+            },
+            {
+            "Employee_Type": "HEAD",
+            "Sub_Segment": "Active 4-5-6",
+            "no": "0.25%",
+            "T": "0.50%"
+            },
+            {
+            "Employee_Type": "HEAD",
+            "Sub_Segment": "b/1.2.3",
+            "no": "0.125%",
+            "T": "0.25%"
+            }
+        ],
+        "wO_Segments": [
+            {
+            "Employee_Type": "collector",
+            ">100%": "1.50%",
+            ">101%": "2.50%",
+            ">121%": "3.50%",
+            ">141%": "5%"
+            },
+            {
+            "Employee_Type": "Tele",
+            ">100%": "1%",
+            ">101%": "1.75%",
+            ">121%": "2.25%",
+            ">141%": "3%"
+            },
+            {
+            "Employee_Type": "S.V",
+            ">100%": "0.50%",
+            ">101%": "0.75%",
+            ">121%": "1%",
+            ">141%": "1.50%"
+            },
+            {
+            "Employee_Type": "HEAD",
+            ">100%": "0.25%",
+            ">101%": "",
+            ">121%": "0.50%",
+            ">141%": ""
+            },
+            {
+            "Employee_Type": "عقود انتاج - collector",
+            ">100%": "",
+            ">101%": "2.00%",
+            ">121%": "",
+            ">141%": ""
+            },
+            {
+            "Employee_Type": "عقود انتاج - Tele",
+            ">100%": "1.50%",
+            ">101%": "",
+            ">121%": "",
+            ">141%": ""
+            }
+        ]
+        },
+        "بنك الإسكندرية": {
+        "Description": "هيكل مقسم حسب Segment (Active/w/O) ونطاقات التحصيل المئوية (0%-100% إلى 201%).",
+        "Data": [
+            {
+            "Employee_Type": "collector",
+            "Segment": "Active",
+            "0%-100%": "1.25%",
+            "101%-125%": "1.75%",
+            "126%-150%": "2.00%",
+            "151%-200%": "2.25%",
+            "201%": "2.50%"
+            },
+            {
+            "Employee_Type": "collector",
+            "Segment": "w/O 12-24",
+            "0%-100%": "1.25%",
+            "101%-125%": "1.75%",
+            "126%-150%": "2.00%",
+            "151%-200%": "2.25%",
+            "201%": "2.50%"
+            },
+            {
+            "Employee_Type": "collector",
+            "Segment": "w/O +24",
+            "0%-100%": "1.50%",
+            "101%-125%": "2.00%",
+            "126%-150%": "2.50%",
+            "151%-200%": "3.00%",
+            "201%": "3.50%"
+            },
+            {
+            "Employee_Type": "Tele",
+            "Segment": "Active",
+            "0%-100%": "0.75%",
+            "101%-125%": "1.00%",
+            "126%-150%": "1.25%",
+            "151%-200%": "1.50%",
+            "201%": "1.75%"
+            },
+            {
+            "Employee_Type": "Tele",
+            "Segment": "w/O 12-24",
+            "0%-100%": "0.75%",
+            "101%-125%": "1.00%",
+            "126%-150%": "1.25%",
+            "151%-200%": "1.50%",
+            "201%": "1.75%"
+            },
+            {
+            "Employee_Type": "Tele",
+            "Segment": "w/O +24",
+            "0%-100%": "1.00%",
+            "101%-125%": "1.25%",
+            "126%-150%": "1.50%",
+            "151%-200%": "1.75%",
+            "201%": "2.00%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "Segment": "Active",
+            "0%-100%": "0.25%",
+            "101%-125%": "0.50%",
+            "126%-150%": "0.60%",
+            "151%-200%": "0.70%",
+            "201%": "0.75%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "Segment": "w/O 12-24",
+            "0%-100%": "0.25%",
+            "101%-125%": "0.50%",
+            "126%-150%": "0.60%",
+            "151%-200%": "0.70%",
+            "201%": "0.75%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "Segment": "w/O +24",
+            "0%-100%": "0.50%",
+            "101%-125%": "0.60%",
+            "126%-150%": "0.75%",
+            "151%-200%": "1.00%",
+            "201%": "1.50%"
+            },
+            {
+            "Employee_Type": "HEAD",
+            "Segment": "Active",
+            "0%-100%": "0.125%",
+            "101%-125%": "0.40%",
+            "126%-150%": "0.45%",
+            "151%-200%": "0.50%",
+            "201%": "0.50%"
+            },
+            {
+            "Employee_Type": "HEAD",
+            "Segment": "w/O 12-24",
+            "0%-100%": "0.125%",
+            "101%-125%": "0.25%",
+            "126%-150%": "0.40%",
+            "151%-200%": "0.45%",
+            "201%": "0.50%"
+            },
+            {
+            "Employee_Type": "HEAD",
+            "Segment": "w/O +24",
+            "0%-100%": "0.25%",
+            "101%-125%": "0.40%",
+            "126%-150%": "0.50%",
+            "151%-200%": "0.60%",
+            "201%": "0.75%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Segment": "collector",
+            "0%-100%": "2.00%",
+            "101%-125%": "",
+            "126%-150%": "",
+            "151%-200%": "",
+            "201%": ""
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Segment": "Tele",
+            "0%-100%": "1.50%",
+            "101%-125%": "",
+            "126%-150%": "",
+            "151%-200%": "",
+            "201%": ""
+            }
+        ]
+        },
+        "بنك كريدي أجريكول": {
+        "Description": "هيكل مقسم حسب Active و w/O، مع نطاقات تحصيل مختلفة.",
+        "Active_Segments": [
+            {
+            "Employee_Type": "Tele",
+            "0%-80%": "0.50%",
+            "81%-100%": "1.00%",
+            "101%-120%": "1.25%",
+            "> 121%": "1.75%"
+            },
+            {
+            "Employee_Type": "collector",
+            "0%-80%": "0.75%",
+            "81%-100%": "1.50%",
+            "101%-120%": "1.75%",
+            "> 121%": "2.25%"
+            },
+            {
+            "Employee_Type": "عقود انتاج - collector",
+            "no": "1.00%",
+            "T": "2.00%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "عقود انتاج - Tele",
+            "no": "",
+            "T": "1.50%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "0%-80%": "0.25%",
+            "81%-100%": "0.50%",
+            "101%-120%": "0.75%",
+            "> 121%": "1.00%"
+            },
+            {
+            "Employee_Type": "HEAD",
+            "0%-80%": "0.125%",
+            "81%-100%": "0.25%",
+            "101%-120%": "0.50%",
+            "> 121%": "0.50%"
+            }
+        ],
+        "wO_Segments": [
+            {
+            "Employee_Type": "Tele",
+            "no": "1.50%",
+            "T": "2.50%",
+            "over": "3.00%"
+            },
+            {
+            "Employee_Type": "collector",
+            "no": "2.00%",
+            "T": "3.00%",
+            "over": "3.50%"
+            },
+            {
+            "Employee_Type": "عقود انتاج - collector",
+            "no": "2.00%",
+            "T": "2.00%",
+            "over": "2.00%"
+            },
+            {
+            "Employee_Type": "عقود انتاج - Tele",
+            "no": "1.50%",
+            "T": "1.50%",
+            "over": "1.50%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "no": "0.75%",
+            "T": "1.00%",
+            "over": "1.25%"
+            },
+            {
+            "Employee_Type": "HEAD",
+            "no": "0.25%",
+            "T": "0.50%",
+            "over": ""
+            }
+        ]
+        },
+        "Money_Fellows": {
+        "Description": "هيكل مقسم حسب Active و CL (Collection) مع تقسيم فرعي حسب فترات التأخير (Bukt) ودرجات الأداء (النسب المئوية 60% - 101%).",
+        "Active_Segments": [
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "Bukt 1-3",
+            "60%": "0.75%",
+            "61%": "1.00%",
+            "91%": "1.25%",
+            "101%": "1.50%"
+            },
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "Active 4-6 & BD",
+            "60%": "1.00%",
+            "61%": "1.25%",
+            "91%": "1.50%",
+            "101%": "1.75%"
+            },
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "DD & w/O",
+            "60%": "1.25%",
+            "61%": "1.50%",
+            "91%": "2.00%",
+            "101%": "2.75%"
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "Bukt 1-3",
+            "60%": "1.00%",
+            "61%": "1.25%",
+            "91%": "1.50%",
+            "101%": "2.00%"
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "Active 4-6 & BD",
+            "60%": "1.50%",
+            "61%": "1.75%",
+            "91%": "2.00%",
+            "101%": "2.25%"
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "DD & w/O",
+            "60%": "1.75%",
+            "61%": "2.50%",
+            "91%": "3.00%",
+            "101%": "3.50%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "collector",
+            "No Target": "2.00%",
+            "Target": "2.00%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "Tele",
+            "No Target": "1.50%",
+            "Target": "1.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "Bukt 1-3",
+            "60%": "0.25%",
+            "61%": "0.25%",
+            "91%": "0.50%",
+            "101%": "0.50%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "Active 4-6 & BD",
+            "60%": "0.50%",
+            "61%": "0.50%",
+            "91%": "0.75%",
+            "101%": "1.00%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "DD & w/O",
+            "60%": "0.75%",
+            "61%": "0.75%",
+            "91%": "1.00%",
+            "101%": "1.25%"
+            },
+            {
+            "Employee_Type": "Head",
+            "Sub_Segment": "Bukt 1-3",
+            "60%": "0.13%",
+            "61%": "0.13%",
+            "91%": "0.25%",
+            "101%": "0.25%"
+            },
+            {
+            "Employee_Type": "Head",
+            "Sub_Segment": "Active 4-6 & BD",
+            "60%": "0.25%",
+            "61%": "0.25%",
+            "91%": "0.50%",
+            "101%": "0.50%"
+            },
+            {
+            "Employee_Type": "Head",
+            "Sub_Segment": "DD & w/O",
+            "60%": "0.25%",
+            "61%": "0.50%",
+            "91%": "0.50%",
+            "101%": "0.50%"
+            }
+        ],
+        "CL_Segments": [
+            {
+            "Employee_Type": "Tele",
+            "40%": "2.00%",
+            "60%": "2.50%",
+            "61%": "3.50%",
+            "91%": "4.50%",
+            "101%": "5.50%"
+            },
+            {
+            "Employee_Type": "collector",
+            "40%": "3.00%",
+            "60%": "4.00%",
+            "61%": "5.00%",
+            "91%": "6.00%",
+            "101%": "7.00%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "40%": "1.00%",
+            "60%": "1.50%",
+            "61%": "2.00%",
+            "91%": "2.50%",
+            "101%": "3.00%"
+            },
+            {
+            "Employee_Type": "Head",
+            "40%": "0.50%",
+            "60%": "0.75%",
+            "61%": "1.25%",
+            "91%": "1.50%",
+            "101%": "1.75%"
+            }
+        ]
+        },
+        "Midtakseet": {
+        "Description": "هيكل مقسم حسب فترات التأخير (Bukt) وأنواع الحسابات (Active/Charged Off) ومستويات الأداء (لا يوجد هدف/هدف/فوق الهدف).",
+        "Data": [
+            {
+            "Employee_Type": "Tele",
+            "Segment": "Bukt 1",
+            "No Target": "0.75%",
+            "Target": "1.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Tele",
+            "Segment": "Active 2-6",
+            "No Target": "1.00%",
+            "Target": "1.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Tele",
+            "Segment": "charged off",
+            "No Target": "1.50%",
+            "Target": "2.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Segment": "Bukt 1",
+            "No Target": "1.25%",
+            "Target": "1.75%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Segment": "Active 2-6",
+            "No Target": "1.50%",
+            "Target": "2.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Segment": "charged off",
+            "No Target": "2.00%",
+            "Target": "3.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Segment": "Bukt 1",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Segment": "Active 2-6",
+            "No Target": "0.50%",
+            "Target": "0.75%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Segment": "charged off",
+            "No Target": "0.75%",
+            "Target": "1.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Segment": "Bukt 1",
+            "No Target": "0.125%",
+            "Target": "0.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Segment": "Active 2-6",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Segment": "charged off",
+            "No Target": "0.50%",
+            "Target": "0.75%",
+            "Over Target": ""
+            }
+        ]
+        },
+        "Souhoola": {
+        "Description": "هيكل مقسم حسب فترات التأخير (Bukt) وأنواع الحسابات (Active/w/O) ومستويات الأداء (لا يوجد هدف/هدف/فوق الهدف).",
+        "Data": [
+            {
+            "Employee_Type": "Tele",
+            "Segment": "Bukt 1",
+            "No Target": "0.75%",
+            "Target": "1.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Tele",
+            "Segment": "Active 2-6",
+            "No Target": "1.00%",
+            "Target": "1.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Tele",
+            "Segment": "w/O",
+            "No Target": "1.25%",
+            "Target": "1.75%",
+            "Over Target": "3.00%"
+            },
+            {
+            "Employee_Type": "collector",
+            "Segment": "Bukt 1",
+            "No Target": "1.25%",
+            "Target": "1.75%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Segment": "Active 2-6",
+            "No Target": "1.50%",
+            "Target": "2.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Segment": "w/O",
+            "No Target": "2.00%",
+            "Target": "3.00%",
+            "Over Target": "4.00%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Segment": "collector",
+            "No Target": "2.00%",
+            "Target": "2.00%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Segment": "Tele",
+            "No Target": "1.50%",
+            "Target": "1.50%",
+            "Over Target": "1.50%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "Segment": "Bukt 1",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Segment": "Active 2-6",
+            "No Target": "0.50%",
+            "Target": "0.75%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Segment": "w/O",
+            "No Target": "0.75%",
+            "Target": "1.00%",
+            "Over Target": "1.50%"
+            },
+            {
+            "Employee_Type": "Head",
+            "Segment": "Bukt 1",
+            "No Target": "0.125%",
+            "Target": "0.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Segment": "Active 2-6",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Segment": "w/O",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            }
+        ]
+        },
+        "Tanmeyah": {
+        "Description": "هيكل مقسم حسب Active (GCL/Active) و w/O (حسب نطاقات الأداء المئوية).",
+        "Active_Segments": [
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "GCL",
+            "No Target": "1.50%",
+            "Target": "3.00%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "Active",
+            "No Target": "1.00%",
+            "Target": "1.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "GCL",
+            "No Target": "2.00%",
+            "Target": "3.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "Active",
+            "No Target": "1.50%",
+            "Target": "2.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "collector",
+            "No Target": "2.00%",
+            "Target": "2.00%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "Tele",
+            "No Target": "1.50%",
+            "Target": "1.50%",
+            "Over Target": "1.50%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "GCL",
+            "No Target": "0.75%",
+            "Target": "1.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "Active",
+            "No Target": "0.50%",
+            "Target": "0.75%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Sub_Segment": "GCL",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Sub_Segment": "Active",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            }
+        ],
+        "wO_Segments": [
+            {
+            "Employee_Type": "collector",
+            ">50%": "2.00%",
+            "50%:75%": "3.00%",
+            ">100%": "4.00%",
+            ">106%": "5%"
+            },
+            {
+            "Employee_Type": "Tele",
+            ">50%": "1.5%",
+            "50%:75%": "2.25%",
+            ">100%": "3.25%",
+            ">106%": "4%"
+            },
+            {
+            "Employee_Type": "S.V",
+            ">50%": "0.50%",
+            "50%:75%": "0.75%",
+            ">100%": "1.25%",
+            ">106%": "1.50%"
+            },
+            {
+            "Employee_Type": "HEAD",
+            ">50%": "0.25%",
+            "50%:75%": "0.40%",
+            ">100%": "0.60%",
+            ">106%": "1.00%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "collector",
+            "50%:75%": "2.00%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "Tele",
+            "50%:75%": "1.50%"
+            }
+        ]
+        },
+        "Waseelah": {
+        "Description": "هيكل موحد (Active / w/O) مع نسب هدف وتحصيل عامة.",
+        "Data": [
+            {
+            "Employee_Type": "Tele",
+            "Type": "Active",
+            "No Target": "1.00%",
+            "Target": "1.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Tele",
+            "Type": "w/O",
+            "No Target": "1.50%",
+            "Target": "2.50%",
+            "Over Target": "3.00%"
+            },
+            {
+            "Employee_Type": "collector",
+            "Type": "Active",
+            "No Target": "1.50%",
+            "Target": "2.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Type": "w/O",
+            "No Target": "2.00%",
+            "Target": "3.00%",
+            "Over Target": "3.50%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Type": "collector",
+            "No Target": "2.00%",
+            "Target": "2.00%",
+            "Over Target": "2.00%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Type": "Tele",
+            "No Target": "1.50%",
+            "Target": "1.50%",
+            "Over Target": "1.50%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "Type": "Active",
+            "No Target": "0.50%",
+            "Target": "0.75%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Type": "w/O",
+            "No Target": "0.75%",
+            "Target": "1.00%",
+            "Over Target": "1.25%"
+            },
+            {
+            "Employee_Type": "Head",
+            "Type": "Active",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Type": "w/O",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            }
+        ]
+        },
+        "Seven": {
+        "Description": "هيكل مقسم حسب نوع المنتج (Ticket Size و Revolving) وفترات التأخير (Bukt) ومستويات الأداء (لا يوجد هدف/هدف/فوق الهدف) (مستخلصة من الصورة المرفقة).",
+        "Ticket_Size_Segments": [
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "Bukt 1-2",
+            "No Target": "0.125%",
+            "Target": "0.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "Active",
+            "No Target": "0.50%",
+            "Target": "1.00%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "Bukt 1-2",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "Active",
+            "No Target": "0.75%",
+            "Target": "1.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "Bukt 1-2",
+            "No Target": "0.125%",
+            "Target": "0.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "Active",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Sub_Segment": "Bukt 1-2",
+            "No Target": "0.0625%",
+            "Target": "0.125%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Sub_Segment": "Active",
+            "No Target": "0.125%",
+            "Target": "0.25%",
+            "Over Target": ""
+            }
+        ],
+        "Revolving_Segments": [
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "Bukt 1-2",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "Active",
+            "No Target": "0.50%",
+            "Target": "1.00%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "W.O",
+            "No Target": "0.75%",
+            "Target": "1.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "Bukt 1-2",
+            "No Target": "0.50%",
+            "Target": "0.75%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "Active",
+            "No Target": "1.00%",
+            "Target": "1.50%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "W.O",
+            "No Target": "1.25%",
+            "Target": "2.25%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "Bukt 1-2",
+            "No Target": "0.25%",
+            "Target": "0.40%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "Active",
+            "No Target": "0.40%",
+            "Target": "0.60%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "W.O",
+            "No Target": "0.75%",
+            "Target": "0.75%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Sub_Segment": "Bukt 1-2",
+            "No Target": "0.125%",
+            "Target": "0.20%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Sub_Segment": "Active",
+            "No Target": "0.20%",
+            "Target": "0.40%",
+            "Over Target": ""
+            },
+            {
+            "Employee_Type": "Head",
+            "Sub_Segment": "W.O",
+            "No Target": "0.25%",
+            "Target": "0.50%",
+            "Over Target": ""
+            }
+        ]
+        },
+        "Erada": {
+        "Description": "هيكل مقسوم حسب Active (فترات زمنية) و w/O (نسبة التحصيل) ومستويات الأداء (No/T/over).",
+        "Active_Segments": [
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "Active 4-5-6",
+            "no": "1.00%",
+            "T": "1.75%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "b/1.2.3",
+            "no": "0.75%",
+            "T": "1.25%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "Active 4-5-6",
+            "no": "1.50%",
+            "T": "2.75%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "b/1.2.3",
+            "no": "1.25%",
+            "T": "2.00%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "collector",
+            "no": "2.00%",
+            "T": "2.00%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "Tele",
+            "no": "1.50%",
+            "T": "1.50%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "Active 4-5-6",
+            "no": "0.50%",
+            "T": "0.75%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "b/1.2.3",
+            "no": "0.25%",
+            "T": "0.50%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "HEAD",
+            "Sub_Segment": "Active 4-5-6",
+            "no": "0.25%",
+            "T": "0.50%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "HEAD",
+            "Sub_Segment": "b/1.2.3",
+            "no": "0.125%",
+            "T": "0.25%",
+            "over": ""
+            }
+        ],
+        "wO_Segments": [
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "w/o",
+            "no": "1.75%",
+            "T": "3.00%",
+            "over": "3.00%"
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "w/o",
+            "no": "2.50%",
+            "T": "4.00%",
+            "over": "3.50%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "collector",
+            "no": "2.00%",
+            "T": "2.00%",
+            "over": "2.00%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "Tele",
+            "no": "1.50%",
+            "T": "1.50%",
+            "over": "1.50%"
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "w/o",
+            "no": "0.75%",
+            "T": "1.25%",
+            "over": "1.25%"
+            },
+            {
+            "Employee_Type": "HEAD",
+            "Sub_Segment": "w/o",
+            "no": "0.25%",
+            "T": "0.50%",
+            "over": ""
+            }
+        ]
+        },
+        "Midbank": {
+        "Description": "هيكل مقسوم حسب Active و w/O، مع مستويات عمولات بناءً على نطاقات الأداء المئوية (0%:99%، 100%:129%، وهكذا).",
+        "Active_Segments": [
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "Active",
+            "0%:99%": "0.75%",
+            "100%:129%": "1.25%",
+            "> 121%": "1.75%"
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "Active",
+            "0%:99%": "1.00%",
+            "101%:120%": "2.00%",
+            "> 121%": "2.25%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "collector",
+            "T": "2.00%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "Tele",
+            "T": "1.50%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "Active",
+            "0%:99%": "0.50%",
+            "101%:120%": "0.75%",
+            "> 121%": "1.25%"
+            },
+            {
+            "Employee_Type": "HEAD",
+            "Sub_Segment": "Active",
+            "0%:99%": "0.25%",
+            "101%:120%": "0.50%",
+            "> 121%": "0.60%"
+            }
+        ],
+        "wO_Segments": [
+            {
+            "Employee_Type": "Tele",
+            "Sub_Segment": "w/O",
+            "0%:99%": "1.00%",
+            "100%:124%": "2.00%",
+            "> 125%": "3.00%"
+            },
+            {
+            "Employee_Type": "collector",
+            "Sub_Segment": "w/O",
+            "0%:99%": "2.00%",
+            "100%:124%": "3.00%",
+            "> 125%": "4.00%"
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "collector",
+            "T": "2.00%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "عقود انتاج",
+            "Sub_Segment": "Tele",
+            "T": "1.50%",
+            "over": ""
+            },
+            {
+            "Employee_Type": "S.V",
+            "Sub_Segment": "w/O",
+            "0%:99%": "0.75%",
+            "100%:124%": "1.00%",
+            "> 125%": "1.25%"
+            },
+            {
+            "Employee_Type": "HEAD",
+            "Sub_Segment": "w/O",
+            "0%:99%": "0.25%",
+            "100%:124%": "0.50%",
+            "> 125%": "0.75%"
+            }
+        ]
+        }
+    }
+}
