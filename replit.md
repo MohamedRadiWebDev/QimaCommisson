@@ -9,7 +9,8 @@ This system processes Excel files containing payment data and calculates commiss
 ## Key Features
 
 - **Excel Upload**: Drag-and-drop file upload with support for .xlsx, .xls, and .csv files
-- **Dynamic Column Mapping**: Map any Excel column to required fields (Payment, Type, Collector, S.V, Head)
+- **Dynamic Column Mapping**: Map any Excel column to required fields (Payment, Type, Collector, S.V, Head, Employee Type)
+- **Target Status Selection**: Choose between No Target/Target/Over Target to determine commission rate tiers
 - **Hierarchical Data Grouping**: Automatic grouping by Head → S.V → Type → Collector
 - **Company Rules**: Waseela company rates with Active/W.O type-based commission calculations
 - **Employee Role Management**: Assign roles (Collector, Telesales, Production) with custom rate overrides
@@ -86,6 +87,8 @@ The application runs on port 5000.
 
 ## Recent Changes
 
+- December 2025: Added Employee Type column mapping to read employee types directly from Excel files
+- December 2025: Added Target Status dropdown selector (No Target/Target/Over Target) for rate tier selection
 - December 2025: Updated commission calculation to read rates from companyRates.json
 - December 2025: Added S.V and Head summary table below main results
 - Initial project setup with Next.js 15, TypeScript, and TailwindCSS
