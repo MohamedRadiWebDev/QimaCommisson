@@ -22,9 +22,11 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
       const workbook = XLSX.utils.book_new();
       const svHeadSummary = generateSVHeadDetailedSummary(data, company);
       
-      const mainData: (string | number)[][] = [];
+      const allData: (string | number)[][] = [];
       
-      mainData.push([
+      allData.push(["تقرير العمولات التفصيلي"]);
+      allData.push([]);
+      allData.push([
         "Head",
         "S.V",
         "Type",
@@ -38,7 +40,7 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
         headGroup.svGroups.forEach((svGroup) => {
           svGroup.types.forEach((typeGroup) => {
             typeGroup.collectors.forEach((collector) => {
-              mainData.push([
+              allData.push([
                 headGroup.head,
                 svGroup.sv,
                 typeGroup.type,
@@ -49,10 +51,10 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
               ]);
             });
             
-            mainData.push([
+            allData.push([
               "",
               "",
-              `مجموع ${typeGroup.type}`,
+              `Total ${typeGroup.type}`,
               "",
               typeGroup.totalPayment.toFixed(2),
               "",
@@ -60,9 +62,9 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
             ]);
           });
           
-          mainData.push([
+          allData.push([
             "",
-            `مجموع ${svGroup.sv}`,
+            `Total ${svGroup.sv}`,
             "",
             "",
             svGroup.totalPayment.toFixed(2),
@@ -71,8 +73,8 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
           ]);
         });
         
-        mainData.push([
-          `مجموع ${headGroup.head}`,
+        allData.push([
+          `Total ${headGroup.head}`,
           "",
           "",
           "",
@@ -81,11 +83,11 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
           ""
         ]);
         
-        mainData.push([]);
+        allData.push([]);
       });
       
-      mainData.push([
-        "المجموع الإجمالي (Grand Total)",
+      allData.push([
+        "Grand Total",
         "",
         "",
         "",
@@ -94,24 +96,17 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
         ""
       ]);
       
-      const mainSheet = XLSX.utils.aoa_to_sheet(mainData);
-      mainSheet["!cols"] = [
-        { wch: 25 },
-        { wch: 25 },
-        { wch: 15 },
-        { wch: 30 },
-        { wch: 18 },
-        { wch: 10 },
-        { wch: 18 }
-      ];
-      XLSX.utils.book_append_sheet(workbook, mainSheet, "Main Report");
+      allData.push([]);
+      allData.push([]);
+      allData.push([]);
       
-      const svData: (string | number)[][] = [];
-      svData.push(["S.V Name", "Type", "Payment", "Rate", "Commission"]);
+      allData.push(["S.V Commissions - عمولات S.V"]);
+      allData.push([]);
+      allData.push(["S.V Name", "Type", "Payment", "Rate", "Commission"]);
       
       svHeadSummary.svDetails.forEach((sv) => {
         sv.typeBreakdown.forEach((typeData) => {
-          svData.push([
+          allData.push([
             sv.name,
             typeData.type,
             typeData.payment.toFixed(2),
@@ -120,40 +115,35 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
           ]);
         });
         
-        svData.push([
-          `مجموع ${sv.name}`,
+        allData.push([
+          `Total ${sv.name}`,
           "",
           sv.totalPayment.toFixed(2),
           "",
           sv.totalCommission.toFixed(2)
         ]);
-        svData.push([]);
+        allData.push([]);
       });
       
-      svData.push([
-        "المجموع الإجمالي S.V",
+      allData.push([
+        "S.V Grand Total",
         "",
         svHeadSummary.totalPayment.toFixed(2),
         "",
         svHeadSummary.totalSVCommission.toFixed(2)
       ]);
       
-      const svSheet = XLSX.utils.aoa_to_sheet(svData);
-      svSheet["!cols"] = [
-        { wch: 25 },
-        { wch: 15 },
-        { wch: 18 },
-        { wch: 10 },
-        { wch: 18 }
-      ];
-      XLSX.utils.book_append_sheet(workbook, svSheet, "S.V Commissions");
+      allData.push([]);
+      allData.push([]);
+      allData.push([]);
       
-      const headData: (string | number)[][] = [];
-      headData.push(["Head Name", "Type", "Payment", "Rate", "Commission"]);
+      allData.push(["Head Commissions - عمولات Head"]);
+      allData.push([]);
+      allData.push(["Head Name", "Type", "Payment", "Rate", "Commission"]);
       
       svHeadSummary.headDetails.forEach((head) => {
         head.typeBreakdown.forEach((typeData) => {
-          headData.push([
+          allData.push([
             head.name,
             typeData.type,
             typeData.payment.toFixed(2),
@@ -162,33 +152,35 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
           ]);
         });
         
-        headData.push([
-          `مجموع ${head.name}`,
+        allData.push([
+          `Total ${head.name}`,
           "",
           head.totalPayment.toFixed(2),
           "",
           head.totalCommission.toFixed(2)
         ]);
-        headData.push([]);
+        allData.push([]);
       });
       
-      headData.push([
-        "المجموع الإجمالي Head",
+      allData.push([
+        "Head Grand Total",
         "",
         svHeadSummary.totalPayment.toFixed(2),
         "",
         svHeadSummary.totalHeadCommission.toFixed(2)
       ]);
       
-      const headSheet = XLSX.utils.aoa_to_sheet(headData);
-      headSheet["!cols"] = [
+      const sheet = XLSX.utils.aoa_to_sheet(allData);
+      sheet["!cols"] = [
+        { wch: 30 },
         { wch: 25 },
         { wch: 15 },
+        { wch: 30 },
         { wch: 18 },
         { wch: 10 },
         { wch: 18 }
       ];
-      XLSX.utils.book_append_sheet(workbook, headSheet, "Head Commissions");
+      XLSX.utils.book_append_sheet(workbook, sheet, "Commission Report");
       
       const date = new Date().toISOString().split("T")[0];
       const fileName = `Commission_Report_${company}_${date}.xlsx`;
@@ -241,7 +233,7 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
             mainTableData.push([
               "",
               "",
-              { content: `مجموع ${typeGroup.type}`, styles: { fontStyle: "bold" } },
+              { content: `Total ${typeGroup.type}`, styles: { fontStyle: "bold" } },
               "",
               { content: typeGroup.totalPayment.toLocaleString("en-US", { minimumFractionDigits: 2 }), styles: { fontStyle: "bold" } },
               "",
@@ -251,7 +243,7 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
           
           mainTableData.push([
             "",
-            { content: `مجموع ${svGroup.sv}`, styles: { fontStyle: "bold", fillColor: [241, 245, 249] } },
+            { content: `Total ${svGroup.sv}`, styles: { fontStyle: "bold", fillColor: [241, 245, 249] } },
             "",
             "",
             { content: svGroup.totalPayment.toLocaleString("en-US", { minimumFractionDigits: 2 }), styles: { fontStyle: "bold", fillColor: [241, 245, 249] } },
@@ -261,7 +253,7 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
         });
         
         mainTableData.push([
-          { content: `مجموع ${headGroup.head}`, styles: { fontStyle: "bold", fillColor: [226, 232, 240] } },
+          { content: `Total ${headGroup.head}`, styles: { fontStyle: "bold", fillColor: [226, 232, 240] } },
           "",
           "",
           "",
@@ -272,7 +264,7 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
       });
       
       mainTableData.push([
-        { content: "المجموع الإجمالي (Grand Total)", styles: { fontStyle: "bold", fillColor: [51, 65, 85], textColor: [255, 255, 255] } },
+        { content: "Grand Total", styles: { fontStyle: "bold", fillColor: [51, 65, 85], textColor: [255, 255, 255] } },
         "",
         "",
         "",
@@ -301,12 +293,6 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
           4: { halign: "right" },
           5: { halign: "center" },
           6: { halign: "right" }
-        },
-        didParseCell: function(cellData) {
-          const text = cellData.cell.text.join("");
-          if (/[\u0600-\u06FF]/.test(text)) {
-            cellData.cell.styles.halign = "right";
-          }
         }
       });
       
@@ -327,7 +313,7 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
         });
         
         svTableData.push([
-          { content: `مجموع ${sv.name}`, styles: { fontStyle: "bold", fillColor: [199, 210, 254] } },
+          { content: `Total ${sv.name}`, styles: { fontStyle: "bold", fillColor: [199, 210, 254] } },
           "",
           { content: sv.totalPayment.toLocaleString("en-US", { minimumFractionDigits: 2 }), styles: { fontStyle: "bold", fillColor: [199, 210, 254] } },
           "",
@@ -336,7 +322,7 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
       });
       
       svTableData.push([
-        { content: "المجموع الإجمالي S.V", styles: { fontStyle: "bold", fillColor: [99, 102, 241], textColor: [255, 255, 255] } },
+        { content: "S.V Grand Total", styles: { fontStyle: "bold", fillColor: [99, 102, 241], textColor: [255, 255, 255] } },
         "",
         { content: svHeadSummary.totalPayment.toLocaleString("en-US", { minimumFractionDigits: 2 }), styles: { fontStyle: "bold", fillColor: [99, 102, 241], textColor: [255, 255, 255] } },
         "",
@@ -363,12 +349,6 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
           2: { halign: "right" },
           3: { halign: "center" },
           4: { halign: "right" }
-        },
-        didParseCell: function(cellData) {
-          const text = cellData.cell.text.join("");
-          if (/[\u0600-\u06FF]/.test(text)) {
-            cellData.cell.styles.halign = "right";
-          }
         }
       });
       
@@ -389,7 +369,7 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
         });
         
         headTableData.push([
-          { content: `مجموع ${head.name}`, styles: { fontStyle: "bold", fillColor: [233, 213, 255] } },
+          { content: `Total ${head.name}`, styles: { fontStyle: "bold", fillColor: [233, 213, 255] } },
           "",
           { content: head.totalPayment.toLocaleString("en-US", { minimumFractionDigits: 2 }), styles: { fontStyle: "bold", fillColor: [233, 213, 255] } },
           "",
@@ -398,7 +378,7 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
       });
       
       headTableData.push([
-        { content: "المجموع الإجمالي Head", styles: { fontStyle: "bold", fillColor: [168, 85, 247], textColor: [255, 255, 255] } },
+        { content: "Head Grand Total", styles: { fontStyle: "bold", fillColor: [168, 85, 247], textColor: [255, 255, 255] } },
         "",
         { content: svHeadSummary.totalPayment.toLocaleString("en-US", { minimumFractionDigits: 2 }), styles: { fontStyle: "bold", fillColor: [168, 85, 247], textColor: [255, 255, 255] } },
         "",
@@ -425,12 +405,6 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
           2: { halign: "right" },
           3: { halign: "center" },
           4: { halign: "right" }
-        },
-        didParseCell: function(cellData) {
-          const text = cellData.cell.text.join("");
-          if (/[\u0600-\u06FF]/.test(text)) {
-            cellData.cell.styles.halign = "right";
-          }
         }
       });
       
@@ -459,7 +433,7 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         )}
-        تصدير Excel
+        Excel
       </button>
       <button
         onClick={exportToPDF}
@@ -476,7 +450,7 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
           </svg>
         )}
-        تصدير PDF
+        PDF
       </button>
     </div>
   );
