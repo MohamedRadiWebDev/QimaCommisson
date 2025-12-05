@@ -6,8 +6,9 @@ import { loadCompanyRates } from "@/lib/companyRatesLoader";
 import { useMemo } from "react";
 
 interface CompanySelectorProps {
-  selectedCompany: Company;
-  onChange: (company: Company) => void;
+  selectedCompany: string;
+  onChange: (company: string) => void;
+  companies?: string[];
 }
 
 const COMPANY_DESCRIPTIONS: Record<string, string> = {
@@ -28,6 +29,7 @@ const COMPANY_DESCRIPTIONS: Record<string, string> = {
 export default function CompanySelector({
   selectedCompany,
   onChange,
+  companies = ["Waseela", "Ghazala", "Marsa"],
 }: CompanySelectorProps) {
   const companyRates = loadCompanyRates();
   const COMPANIES = Object.keys(companyRates).map((companyId) => ({
