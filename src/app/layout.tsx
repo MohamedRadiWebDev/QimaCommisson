@@ -3,7 +3,7 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 
 export const metadata: Metadata = {
-  title: "Commission Calculator",
+  title: "إدارة طحن العمولات",
   description: "Calculate collectors commissions from Excel files",
 };
 
