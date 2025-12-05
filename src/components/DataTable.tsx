@@ -218,9 +218,75 @@ export default function DataTable({ data, company }: DataTableProps) {
                     );
                   })}
 
+                  {(() => {
+                    const headTypeTotals = new Map<string, { payment: number; commission: number; rate: number }>();
+                    
+                    headGroup.svGroups.forEach(svGroup => {
+                      svGroup.types.forEach(typeGroup => {
+                        const existing = headTypeTotals.get(typeGroup.type) || { payment: 0, commission: 0, rate: 0 };
+                        headTypeTotals.set(typeGroup.type, {
+                          payment: existing.payment + typeGroup.totalPayment,
+                          commission: existing.commission + typeGroup.totalCommission,
+                          rate: typeGroup.totalRate
+                        });
+                      });
+                    });
+
+                    const sortedTypes = Array.from(headTypeTotals.entries()).sort((a, b) => {
+                      if (a[0] === "Active") return -1;
+                      if (b[0] === "Active") return 1;
+                      return a[0].localeCompare(b[0]);
+                    });
+
+                    return (
+                      <>
+                        {sortedTypes.map(([typeName, totals]) => (
+                          <tr 
+                            key={typeName}
+                            className={cn(
+                              "font-semibold border-t",
+                              typeName === "Active" 
+                                ? "bg-emerald-100 border-emerald-200" 
+                                : "bg-amber-100 border-amber-200"
+                            )}
+                          >
+                            <td className={cn(
+                              "px-4 py-2 text-right font-bold",
+                              typeName === "Active" ? "text-emerald-800" : "text-amber-800"
+                            )} colSpan={4}>
+                              {typeName}
+                            </td>
+                            <td className={cn(
+                              "px-4 py-2 text-right font-bold",
+                              typeName === "Active" ? "text-emerald-800" : "text-amber-800"
+                            )}>
+                              {formatCurrency(totals.payment)}
+                            </td>
+                            <td className="px-4 py-2 text-right">
+                              <span className={cn(
+                                "px-2 py-1 rounded text-sm font-bold",
+                                typeName === "Active" 
+                                  ? "bg-emerald-200 text-emerald-900 border border-emerald-400" 
+                                  : "bg-amber-200 text-amber-900 border border-amber-400"
+                              )}>
+                                {formatPercent(totals.rate)}
+                              </span>
+                            </td>
+                            <td className={cn(
+                              "px-4 py-2 text-right font-bold",
+                              typeName === "Active" ? "text-emerald-800" : "text-amber-800"
+                            )}>
+                              {formatCurrency(totals.commission)}
+                            </td>
+                          </tr>
+                        ))}
+                      </>
+                    );
+                  })()}
+
                   <tr className="bg-slate-200 font-bold border-t-2 border-slate-300">
                     <td className="px-4 py-3 text-right text-slate-800" colSpan={4}>
-                      Total {headGroup.head}
+                      مجموع النادى ابو الحسن احمد
                     </td>
                     <td className="px-4 py-3 text-right text-slate-900">{formatCurrency(headGroup.totalPayment)}</td>
                     <td className="px-4 py-3"></td>
