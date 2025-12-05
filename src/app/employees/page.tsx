@@ -6,17 +6,20 @@ import { useEmployeeStore } from "@/lib/employeeStore";
 import type { Employee } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import * as XLSX from "xlsx";
 
 const EMPLOYEE_TYPES = ["collector", "tele", "production", "S.V", "Head"] as const;
 
 export default function EmployeesPage() {
-  const { employees, addEmployee, updateEmployee, deleteEmployee } = useEmployeeStore();
+  const { employees, addEmployee, updateEmployee, deleteEmployee, loadEmployees } = useEmployeeStore();
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
   const [newEmployeeName, setNewEmployeeName] = useState("");
   const [newEmployeeType, setNewEmployeeType] = useState<Employee["type"]>("collector");
   const [editingEmployee, setEditingEmployee] = useState<string | null>(null);
   const [tempType, setTempType] = useState<Employee["type"]>("collector");
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const filteredEmployees = useMemo(() => {
     if (!searchTerm) return employees;
@@ -52,6 +55,103 @@ export default function EmployeesPage() {
   const saveEdit = (name: string) => {
     updateEmployee(name, tempType);
     setEditingEmployee(null);
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const validExtensions = [".xlsx", ".xls"];
+    const extension = file.name.toLowerCase().slice(file.name.lastIndexOf("."));
+    
+    if (!validExtensions.includes(extension)) {
+      setUploadError("يرجى رفع ملف Excel فقط (.xlsx أو .xls)");
+      return;
+    }
+
+    setIsUploading(true);
+    setUploadError(null);
+
+    try {
+      const reader = new FileReader();
+      
+      reader.onload = (event) => {
+        try {
+          const data = event.target?.result;
+          const workbook = XLSX.read(data, { type: "binary" });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          
+          const jsonData = XLSX.utils.sheet_to_json<{
+            name?: string;
+            type?: string;
+            Name?: string;
+            Type?: string;
+            الاسم?: string;
+            النوع?: string;
+          }>(worksheet, { defval: "" });
+
+          if (jsonData.length === 0) {
+            setUploadError("الملف فارغ أو لا يحتوي على بيانات");
+            setIsUploading(false);
+            return;
+          }
+
+          const newEmployees: Employee[] = [];
+          const errors: string[] = [];
+
+          jsonData.forEach((row, index) => {
+            const name = (row.name || row.Name || row.الاسم || "").toString().trim();
+            const typeRaw = (row.type || row.Type || row.النوع || "").toString().trim().toLowerCase();
+            
+            if (!name) {
+              errors.push(`السطر ${index + 2}: الاسم مطلوب`);
+              return;
+            }
+
+            let type: Employee["type"] = "collector";
+            
+            if (typeRaw.includes("collector")) type = "collector";
+            else if (typeRaw.includes("tele")) type = "tele";
+            else if (typeRaw.includes("production") || typeRaw.includes("انتاج")) type = "production";
+            else if (typeRaw.includes("s.v") || typeRaw.includes("sv")) type = "S.V";
+            else if (typeRaw.includes("head")) type = "Head";
+            else if (!typeRaw) {
+              type = "collector";
+            } else {
+              errors.push(`السطر ${index + 2}: نوع غير صالح "${typeRaw}"`);
+              return;
+            }
+
+            newEmployees.push({ name, type });
+          });
+
+          if (errors.length > 0) {
+            setUploadError(`تم العثور على ${errors.length} خطأ:\n${errors.slice(0, 5).join("\n")}`);
+          }
+
+          if (newEmployees.length > 0) {
+            loadEmployees(newEmployees);
+            alert(`تم رفع ${newEmployees.length} موظف بنجاح!`);
+          }
+
+          setIsUploading(false);
+        } catch (err) {
+          setUploadError("خطأ في قراءة الملف: " + (err as Error).message);
+          setIsUploading(false);
+        }
+      };
+
+      reader.onerror = () => {
+        setUploadError("فشل في قراءة الملف");
+        setIsUploading(false);
+      };
+
+      reader.readAsBinaryString(file);
+    } catch (err) {
+      setUploadError("خطأ في معالجة الملف: " + (err as Error).message);
+      setIsUploading(false);
+    }
   };
 
   const stats = {
@@ -120,15 +220,50 @@ export default function EmployeesPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="px-4 py-2 border-2 border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-slate-800"
             />
-            <button
-              onClick={() => setShowAddForm(!showAddForm)}
-              className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-semibold flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              إضافة موظف جديد
-            </button>
+            <div className="flex gap-2">
+              <label className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold flex items-center gap-2 cursor-pointer">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                {isUploading ? "جاري الرفع..." : "رفع ملف Excel"}
+                <input
+                  type="file"
+                  accept=".xlsx,.xls"
+                  onChange={handleFileUpload}
+                  disabled={isUploading}
+                  className="hidden"
+                />
+              </label>
+              <button
+                onClick={() => setShowAddForm(!showAddForm)}
+                className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-semibold flex items-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                إضافة موظف جديد
+              </button>
+            </div>
+          </div>
+
+          {uploadError && (
+            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-800 font-medium whitespace-pre-line">{uploadError}</p>
+              <button
+                onClick={() => setUploadError(null)}
+                className="mt-2 text-sm text-red-600 hover:text-red-700 underline"
+              >
+                إغلاق
+              </button>
+            </div>
+          )}
+
+          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-sm text-blue-800 font-medium mb-2">📋 تنسيق ملف Excel المطلوب:</p>
+            <ul className="text-sm text-blue-700 space-y-1 list-disc list-inside">
+              <li>العمود الأول: <strong>name</strong> (اسم الموظف)</li>
+              <li>العمود الثاني: <strong>type</strong> (النوع: collector, tele, production, S.V, Head)</li>
+            </ul>
           </div>
 
           {showAddForm && (

@@ -19,9 +19,15 @@ export const useEmployeeStore = create<EmployeeState>()(
       employees: [],
 
       addEmployee: (employee) =>
-        set((state) => ({
-          employees: [...state.employees, employee],
-        })),
+        set((state) => {
+          const exists = state.employees.find((emp) => emp.name === employee.name);
+          if (exists) {
+            return state;
+          }
+          return {
+            employees: [...state.employees, employee],
+          };
+        }),
 
       updateEmployee: (name, type) =>
         set((state) => ({
