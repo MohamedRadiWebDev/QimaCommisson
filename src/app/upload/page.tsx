@@ -5,6 +5,7 @@ import FileUploader from "@/components/FileUploader";
 import ColumnMapping from "@/components/ColumnMapping";
 import CompanySelector from "@/components/CompanySelector";
 import DataTable from "@/components/DataTable";
+import ExportButtons from "@/components/ExportButtons";
 import { useAppStore, useRolesStore } from "@/lib/store";
 import { parseExcelFile, normalizeData, getUniqueCollectors } from "@/lib/parseExcel";
 import { groupAndCalculate } from "@/lib/grouping";
@@ -243,11 +244,12 @@ export default function UploadPage() {
             </div>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center justify-between">
             <CompanySelector
               selectedCompany={selectedCompany}
               onCompanyChange={handleCompanyChange}
             />
+            <ExportButtons data={processedData} company={selectedCompany} />
           </div>
 
           <DataTable data={processedData} company={selectedCompany} />
