@@ -145,6 +145,9 @@ export default function DataTable({ data, company }: DataTableProps) {
                   {formatCurrency(data.grandTotalPayment)}
                 </td>
                 <td className="px-4 py-4"></td>
+                <td className="px-4 py-4 text-base font-bold text-white tabular-nums">
+                  {formatCurrency(data.grandTotalCommission)}
+                </td>
                 <td className="px-4 py-4"></td>
               </tr>
             </tbody>

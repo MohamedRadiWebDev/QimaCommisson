@@ -167,7 +167,7 @@ export default function AllDomainsDashboard({ domains }: AllDomainsDashboardProp
         <div className="stat-card bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-blue-700 mb-1">إجمالي العمولات</p>
+              <p className="text-sm text-blue-700 mb-1">Grand Total Commission</p>
               <p className="text-xl font-bold text-blue-800">
                 {formatCurrency(aggregatedStats.totalCommission)}
               </p>
