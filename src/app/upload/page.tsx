@@ -233,7 +233,6 @@ export default function UploadPage() {
               <CompanySelector
                 selectedCompany={selectedCompany}
                 onChange={handleCompanyChange}
-                companies={["Waseela", "Ghazala", "Marsa"]}
               />
               <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4">
                 <label className="block text-sm font-bold text-slate-700 mb-2">

@@ -1,15 +1,5 @@
-
 import type { Company, EmployeeRolesMapping } from "./types";
 import { loadCompanyRates } from "./companyRatesLoader";
-
-// Helper to get custom rate if available (to be called from client components)
-export function getCustomRateIfExists(collectorName: string, employees: Array<{name: string; customRate?: number}>): number | null {
-  const employee = employees.find(emp => emp.name === collectorName);
-  if (employee?.customRate !== undefined && employee.customRate > 0) {
-    return employee.customRate;
-  }
-  return null;
-}
 
 const companyRatesData = loadCompanyRates();
 
@@ -201,15 +191,17 @@ export function getCollectorRate(
   employeeRoles: EmployeeRolesMapping,
   targetStatus: "No Target" | "Target" | "Over Target" = "No Target"
 ): number {
-  // Default employee type is collector
-  let employeeType = "collector";
-  
-  // Check if employee has a role defined in employeeRoles
   const employeeRole = employeeRoles[collectorName];
-  if (employeeRole?.role === "S.V") {
-    employeeType = "S.V";
-  } else if (employeeRole?.role === "Head") {
-    employeeType = "Head";
+  
+  if (employeeRole?.customRate !== undefined && employeeRole.customRate > 0) {
+    return employeeRole.customRate;
+  }
+
+  let employeeType = "collector";
+  if (employeeRole?.role === "Telesales") {
+    employeeType = "Tele";
+  } else if (employeeRole?.role === "Production") {
+    employeeType = "production";
   } else if (employeeRole?.role === "Collector") {
     employeeType = "collector";
   }

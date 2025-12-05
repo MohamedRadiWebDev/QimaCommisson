@@ -8,6 +8,7 @@ import type {
   ProcessedData,
   Company,
   EmployeeRolesMapping,
+  EmployeeRoleEntry,
   TargetStatus,
   Domain,
 } from "./types";
@@ -35,7 +36,7 @@ interface AppState {
 
 interface RolesState {
   employeeRoles: EmployeeRolesMapping;
-  setEmployeeRole: (name: string, role: EmployeeRolesMapping[string]) => void;
+  setEmployeeRole: (name: string, role: EmployeeRoleEntry) => void;
   removeEmployeeRole: (name: string) => void;
   clearAllRoles: () => void;
 }
