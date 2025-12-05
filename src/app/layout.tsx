@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ar" dir="rtl">
       <body className="antialiased min-h-screen bg-gray-50">
         <Navigation />
         <main className="container mx-auto px-4 py-8">
