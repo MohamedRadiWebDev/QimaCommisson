@@ -1,4 +1,3 @@
-
 export interface ColumnMapping {
   payment: string;
   type: string;
@@ -104,7 +103,19 @@ export interface Employee {
 }
 
 export interface EmployeeRolesMapping {
-  [name: string]: Employee;
+  [employeeName: string]: {
+    role: "Head" | "S.V" | "Collector";
+    headName?: string;
+    svName?: string;
+  };
+}
+
+export interface NormalizedRow {
+  collector: string;
+  type: string;
+  payment: number;
+  head?: string;
+  sv?: string;
 }
 
 export interface Domain {
