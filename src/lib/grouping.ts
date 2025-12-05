@@ -181,16 +181,25 @@ export function generateSVHeadSummary(data: ProcessedData, company: Company): SV
   };
 }
 
+export interface TypeBreakdown {
+  type: string;
+  payment: number;
+  rate: number;
+  commission: number;
+}
+
 export interface SVDetail {
   name: string;
   totalPayment: number;
   totalCommission: number;
+  typeBreakdown: TypeBreakdown[];
 }
 
 export interface HeadDetail {
   name: string;
   totalPayment: number;
   totalCommission: number;
+  typeBreakdown: TypeBreakdown[];
 }
 
 export interface SVHeadDetailedSummary {
@@ -202,8 +211,8 @@ export interface SVHeadDetailedSummary {
 }
 
 export function generateSVHeadDetailedSummary(data: ProcessedData, company: Company): SVHeadDetailedSummary {
-  const svMap = new Map<string, { payment: number; commission: number }>();
-  const headMap = new Map<string, { payment: number; commission: number }>();
+  const svMap = new Map<string, { payment: number; commission: number; typeBreakdown: Map<string, { payment: number; rate: number; commission: number }> }>();
+  const headMap = new Map<string, { payment: number; commission: number; typeBreakdown: Map<string, { payment: number; rate: number; commission: number }> }>();
   
   let totalPayment = 0;
 
@@ -211,6 +220,7 @@ export function generateSVHeadDetailedSummary(data: ProcessedData, company: Comp
     headGroup.svGroups.forEach((svGroup) => {
       let svTotalPayment = 0;
       let svTotalCommission = 0;
+      const svTypeBreakdown = new Map<string, { payment: number; rate: number; commission: number }>();
 
       svGroup.types.forEach((typeGroup) => {
         const svRate = getCommissionRateFromJson(company, typeGroup.type, "S.V", "No Target");
@@ -218,17 +228,36 @@ export function generateSVHeadDetailedSummary(data: ProcessedData, company: Comp
         
         svTotalPayment += typeGroup.totalPayment;
         svTotalCommission += svCommission;
+
+        const currentType = svTypeBreakdown.get(typeGroup.type) || { payment: 0, rate: svRate, commission: 0 };
+        svTypeBreakdown.set(typeGroup.type, {
+          payment: currentType.payment + typeGroup.totalPayment,
+          rate: svRate,
+          commission: currentType.commission + svCommission
+        });
       });
 
-      const currentSV = svMap.get(svGroup.sv) || { payment: 0, commission: 0 };
+      const currentSV = svMap.get(svGroup.sv) || { payment: 0, commission: 0, typeBreakdown: new Map() };
+      
+      svTypeBreakdown.forEach((typeData, typeName) => {
+        const existingType = currentSV.typeBreakdown.get(typeName) || { payment: 0, rate: typeData.rate, commission: 0 };
+        currentSV.typeBreakdown.set(typeName, {
+          payment: existingType.payment + typeData.payment,
+          rate: typeData.rate,
+          commission: existingType.commission + typeData.commission
+        });
+      });
+
       svMap.set(svGroup.sv, {
         payment: currentSV.payment + svTotalPayment,
-        commission: currentSV.commission + svTotalCommission
+        commission: currentSV.commission + svTotalCommission,
+        typeBreakdown: currentSV.typeBreakdown
       });
     });
 
     let headTotalPayment = 0;
     let headTotalCommission = 0;
+    const headTypeBreakdown = new Map<string, { payment: number; rate: number; commission: number }>();
 
     headGroup.svGroups.forEach((svGroup) => {
       svGroup.types.forEach((typeGroup) => {
@@ -237,13 +266,31 @@ export function generateSVHeadDetailedSummary(data: ProcessedData, company: Comp
         
         headTotalPayment += typeGroup.totalPayment;
         headTotalCommission += headCommission;
+
+        const currentType = headTypeBreakdown.get(typeGroup.type) || { payment: 0, rate: headRate, commission: 0 };
+        headTypeBreakdown.set(typeGroup.type, {
+          payment: currentType.payment + typeGroup.totalPayment,
+          rate: headRate,
+          commission: currentType.commission + headCommission
+        });
       });
     });
 
-    const currentHead = headMap.get(headGroup.head) || { payment: 0, commission: 0 };
+    const currentHead = headMap.get(headGroup.head) || { payment: 0, commission: 0, typeBreakdown: new Map() };
+    
+    headTypeBreakdown.forEach((typeData, typeName) => {
+      const existingType = currentHead.typeBreakdown.get(typeName) || { payment: 0, rate: typeData.rate, commission: 0 };
+      currentHead.typeBreakdown.set(typeName, {
+        payment: existingType.payment + typeData.payment,
+        rate: typeData.rate,
+        commission: existingType.commission + typeData.commission
+      });
+    });
+
     headMap.set(headGroup.head, {
       payment: currentHead.payment + headTotalPayment,
-      commission: currentHead.commission + headTotalCommission
+      commission: currentHead.commission + headTotalCommission,
+      typeBreakdown: currentHead.typeBreakdown
     });
     
     totalPayment += headTotalPayment;
@@ -253,10 +300,22 @@ export function generateSVHeadDetailedSummary(data: ProcessedData, company: Comp
   let totalSVCommission = 0;
 
   svMap.forEach((data, name) => {
+    const typeBreakdown: TypeBreakdown[] = [];
+    data.typeBreakdown.forEach((typeData, typeName) => {
+      typeBreakdown.push({
+        type: typeName,
+        payment: typeData.payment,
+        rate: typeData.rate,
+        commission: typeData.commission
+      });
+    });
+    typeBreakdown.sort((a, b) => b.payment - a.payment);
+
     svDetails.push({
       name,
       totalPayment: data.payment,
-      totalCommission: data.commission
+      totalCommission: data.commission,
+      typeBreakdown
     });
     totalSVCommission += data.commission;
   });
@@ -267,10 +326,22 @@ export function generateSVHeadDetailedSummary(data: ProcessedData, company: Comp
   let totalHeadCommission = 0;
 
   headMap.forEach((data, name) => {
+    const typeBreakdown: TypeBreakdown[] = [];
+    data.typeBreakdown.forEach((typeData, typeName) => {
+      typeBreakdown.push({
+        type: typeName,
+        payment: typeData.payment,
+        rate: typeData.rate,
+        commission: typeData.commission
+      });
+    });
+    typeBreakdown.sort((a, b) => b.payment - a.payment);
+
     headDetails.push({
       name,
       totalPayment: data.payment,
-      totalCommission: data.commission
+      totalCommission: data.commission,
+      typeBreakdown
     });
     totalHeadCommission += data.commission;
   });
