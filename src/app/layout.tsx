@@ -3,7 +3,7 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 
 export const metadata: Metadata = {
-  title: "حساب عمولات بدون عناء المحاسبين",
+  title: "إدارة طحن العمولات",
   description: "كل اللي عليك ترفّع… وإحنا نرتّب",
 };
 
