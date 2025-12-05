@@ -3,8 +3,8 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 
 export const metadata: Metadata = {
-  title: "إدارة طحن العمولات",
-  description: "Calculate collectors commissions from Excel files",
+  title: "حساب العمولات بدون عناء المحاسبين",
+  description: "كل اللي عليك ترفّع… وإحنا نرتّب",
 };
 
 export default function RootLayout({
