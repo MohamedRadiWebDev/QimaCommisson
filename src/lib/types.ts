@@ -18,6 +18,11 @@ export interface NormalizedRow {
   head: string;
 }
 
+export interface Employee {
+  name: string;
+  type: "collector" | "tele" | "production" | "S.V" | "Head";
+}
+
 export interface EmployeeRole {
   name: string;
   role: "Collector" | "Telesales" | "Production";
@@ -63,7 +68,19 @@ export interface ProcessedData {
   grandTotalCommission: number;
 }
 
-export type Company = "Waseela";
+export type Company = 
+  | "Raya" 
+  | "VALU" 
+  | "بنك الإسكندرية" 
+  | "بنك كريدي أجريكول" 
+  | "Money_Fellows" 
+  | "Midtakseet" 
+  | "Souhoola" 
+  | "Tanmeyah" 
+  | "Waseela" 
+  | "Seven" 
+  | "Erada" 
+  | "Midbank";
 
 export interface CompanyRates {
   [type: string]: {

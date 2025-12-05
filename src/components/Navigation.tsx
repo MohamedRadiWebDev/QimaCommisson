@@ -10,6 +10,7 @@ export default function Navigation() {
   const links = [
     { href: "/", label: "Home" },
     { href: "/upload", label: "Upload Excel" },
+    { href: "/employees", label: "Employees" },
     { href: "/roles", label: "Manage Roles" },
   ];
 

@@ -1,0 +1,153 @@
+
+{
+  "Raya": {
+    "Description": "هيكل موحد (Active / w/O) مع نسب هدف وتحصيل عامة.",
+    "Data": [
+      {
+        "Employee_Type": "Tele",
+        "Type": "Active",
+        "No Target": "1.00%",
+        "Target": "1.50%",
+        "Over Target": ""
+      },
+      {
+        "Employee_Type": "Tele",
+        "Type": "w/O",
+        "No Target": "1.25%",
+        "Target": "1.75%",
+        "Over Target": "3.00%"
+      },
+      {
+        "Employee_Type": "collector",
+        "Type": "Active",
+        "No Target": "1.50%",
+        "Target": "2.25%",
+        "Over Target": ""
+      },
+      {
+        "Employee_Type": "collector",
+        "Type": "w/O",
+        "No Target": "2.00%",
+        "Target": "3.00%",
+        "Over Target": "4.00%"
+      },
+      {
+        "Employee_Type": "production",
+        "Type": "collector",
+        "No Target": "2.00%",
+        "Target": "2.00%",
+        "Over Target": ""
+      },
+      {
+        "Employee_Type": "production",
+        "Type": "Tele",
+        "No Target": "1.50%",
+        "Target": "1.50%",
+        "Over Target": "1.50%"
+      },
+      {
+        "Employee_Type": "S.V",
+        "Type": "Active",
+        "No Target": "0.50%",
+        "Target": "0.75%",
+        "Over Target": ""
+      },
+      {
+        "Employee_Type": "S.V",
+        "Type": "w/O",
+        "No Target": "0.75%",
+        "Target": "1.00%",
+        "Over Target": "1.50%"
+      },
+      {
+        "Employee_Type": "Head",
+        "Type": "Active",
+        "No Target": "0.25%",
+        "Target": "0.50%",
+        "Over Target": ""
+      },
+      {
+        "Employee_Type": "Head",
+        "Type": "w/O",
+        "No Target": "0.25%",
+        "Target": "0.50%",
+        "Over Target": "0.75%"
+      }
+    ]
+  },
+  "Waseela": {
+    "Description": "هيكل موحد (Active / w/O) مع نسب هدف وتحصيل عامة.",
+    "Data": [
+      {
+        "Employee_Type": "Tele",
+        "Type": "Active",
+        "No Target": "1.00%",
+        "Target": "1.50%",
+        "Over Target": ""
+      },
+      {
+        "Employee_Type": "Tele",
+        "Type": "w/O",
+        "No Target": "1.50%",
+        "Target": "2.50%",
+        "Over Target": "3.00%"
+      },
+      {
+        "Employee_Type": "collector",
+        "Type": "Active",
+        "No Target": "1.50%",
+        "Target": "2.25%",
+        "Over Target": ""
+      },
+      {
+        "Employee_Type": "collector",
+        "Type": "w/O",
+        "No Target": "2.00%",
+        "Target": "3.00%",
+        "Over Target": "3.50%"
+      },
+      {
+        "Employee_Type": "production",
+        "Type": "collector",
+        "No Target": "2.00%",
+        "Target": "2.00%",
+        "Over Target": "2.00%"
+      },
+      {
+        "Employee_Type": "production",
+        "Type": "Tele",
+        "No Target": "1.50%",
+        "Target": "1.50%",
+        "Over Target": "1.50%"
+      },
+      {
+        "Employee_Type": "S.V",
+        "Type": "Active",
+        "No Target": "0.50%",
+        "Target": "0.75%",
+        "Over Target": ""
+      },
+      {
+        "Employee_Type": "S.V",
+        "Type": "w/O",
+        "No Target": "0.75%",
+        "Target": "1.00%",
+        "Over Target": "1.25%"
+      },
+      {
+        "Employee_Type": "Head",
+        "Type": "Active",
+        "No Target": "0.25%",
+        "Target": "0.50%",
+        "Over Target": ""
+      },
+      {
+        "Employee_Type": "Head",
+        "Type": "w/O",
+        "No Target": "0.25%",
+        "Target": "0.50%",
+        "Over Target": ""
+      }
+    ]
+  }
+}

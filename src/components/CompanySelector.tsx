@@ -10,9 +10,64 @@ interface CompanySelectorProps {
 
 const COMPANIES: { id: Company; name: string; description: string }[] = [
   {
+    id: "Raya",
+    name: "Raya",
+    description: "Raya - Rates",
+  },
+  {
+    id: "VALU",
+    name: "VALU",
+    description: "VALU - Installments",
+  },
+  {
+    id: "بنك الإسكندرية",
+    name: "بنك الإسكندرية",
+    description: "Bank of Alexandria - Loans",
+  },
+  {
+    id: "بنك كريدي أجريكول",
+    name: "بنك كريدي أجريكول",
+    description: "Crédit Agricole Egypt - Loans",
+  },
+  {
+    id: "Money_Fellows",
+    name: "Money Fellows",
+    description: "Money Fellows - Microfinance",
+  },
+  {
+    id: "Midtakseet",
+    name: "Midtakseet",
+    description: "Midtakseet - Installments",
+  },
+  {
+    id: "Souhoola",
+    name: "Souhoola",
+    description: "Souhoola - Installments",
+  },
+  {
+    id: "Tanmeyah",
+    name: "Tanmeyah",
+    description: "Tanmeyah - SME Loans",
+  },
+  {
     id: "Waseela",
     name: "Waseela",
-    description: "وسيلة - Active & W.O rates",
+    description: "Waseela - Active & W.O rates",
+  },
+  {
+    id: "Seven",
+    name: "Seven",
+    description: "Seven - Loans",
+  },
+  {
+    id: "Erada",
+    name: "Erada",
+    description: "Erada - SME Loans",
+  },
+  {
+    id: "Midbank",
+    name: "Midbank",
+    description: "Midbank - Loans",
   },
 ];
 
