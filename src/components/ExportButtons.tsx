@@ -8,14 +8,6 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { generateSVHeadDetailedSummary } from "@/lib/grouping";
 import type { Company } from "@/lib/types";
-import "jspdf-autotable";
-
-// Add Arabic font support
-if (typeof window !== 'undefined') {
-  import('jspdf-arabic-font').then(() => {
-    // Font will be automatically registered
-  });
-}
 
 interface ExportButtonsProps {
   data: ProcessedData;
@@ -219,10 +211,6 @@ export default function ExportButtons({ data, company }: ExportButtonsProps) {
       unit: "mm",
       format: "a4"
     });
-    
-    // Set default font to Arabic
-    doc.setFont("Amiri-Regular");
-    doc.setLanguage("ar");
     
     const svHeadSummary = generateSVHeadDetailedSummary(data, company);
     
