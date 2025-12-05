@@ -191,19 +191,24 @@ export function getCollectorRate(
   employeeRoles: EmployeeRolesMapping,
   targetStatus: "No Target" | "Target" | "Over Target" = "No Target"
 ): number {
-  const employeeRole = employeeRoles[collectorName];
+  // Try to get employee from store for custom rate
+  const { getEmployee } = require("./employeeStore").useEmployeeStore.getState();
+  const employee = getEmployee(collectorName);
   
-  if (employeeRole?.customRate !== undefined && employeeRole.customRate > 0) {
-    return employeeRole.customRate;
+  if (employee?.customRate !== undefined && employee.customRate > 0) {
+    return employee.customRate;
   }
 
+  // Determine employee type from employee data or roles mapping
   let employeeType = "collector";
-  if (employeeRole?.role === "Telesales") {
-    employeeType = "Tele";
-  } else if (employeeRole?.role === "Production") {
-    employeeType = "production";
-  } else if (employeeRole?.role === "Collector") {
-    employeeType = "collector";
+  if (employee) {
+    if (employee.type === "tele") {
+      employeeType = "Tele";
+    } else if (employee.type === "production") {
+      employeeType = "production";
+    } else if (employee.type === "collector") {
+      employeeType = "collector";
+    }
   }
 
   return getCommissionRateFromJson(company, type, employeeType, targetStatus);
