@@ -7,7 +7,7 @@ import { useMemo } from "react";
 
 interface CompanySelectorProps {
   selectedCompany: Company;
-  onCompanyChange: (company: Company) => void;
+  onChange: (company: Company) => void;
 }
 
 const COMPANY_DESCRIPTIONS: Record<string, string> = {
@@ -27,7 +27,7 @@ const COMPANY_DESCRIPTIONS: Record<string, string> = {
 
 export default function CompanySelector({
   selectedCompany,
-  onCompanyChange,
+  onChange,
 }: CompanySelectorProps) {
   const companyRates = loadCompanyRates();
   const COMPANIES = Object.keys(companyRates).map((companyId) => ({
@@ -43,7 +43,7 @@ export default function CompanySelector({
         {COMPANIES.map((company) => (
           <button
             key={company.id}
-            onClick={() => onCompanyChange(company.id)}
+            onClick={() => onChange(company.id)}
             className={cn(
               "p-4 rounded-lg border-2 text-left transition-all",
               selectedCompany === company.id
